@@ -1,0 +1,53 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31729.503
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NopApp.WebApi", "NopApp.Core\NopApp.WebApi.csproj", "{61B00125-1FE4-47B5-B45B-3007810523D4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CC0A4C0E-CE8D-440D-A8BC-3096E1F005E9} = {CC0A4C0E-CE8D-440D-A8BC-3096E1F005E9}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NopApp.Service", "NopApp.Service\NopApp.Service.csproj", "{CC0A4C0E-CE8D-440D-A8BC-3096E1F005E9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2AFC328C-08BB-43A1-B063-4B4F08312B17} = {2AFC328C-08BB-43A1-B063-4B4F08312B17}
+		{8C7E0FC6-3A96-46CC-9D1B-777293B6A43C} = {8C7E0FC6-3A96-46CC-9D1B-777293B6A43C}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NopApp.DAL", "NopApp.Data\NopApp.DAL.csproj", "{2AFC328C-08BB-43A1-B063-4B4F08312B17}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8C7E0FC6-3A96-46CC-9D1B-777293B6A43C} = {8C7E0FC6-3A96-46CC-9D1B-777293B6A43C}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NopApp.Models", "NopApp.Models\NopApp.Models.csproj", "{8C7E0FC6-3A96-46CC-9D1B-777293B6A43C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{61B00125-1FE4-47B5-B45B-3007810523D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61B00125-1FE4-47B5-B45B-3007810523D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61B00125-1FE4-47B5-B45B-3007810523D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61B00125-1FE4-47B5-B45B-3007810523D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC0A4C0E-CE8D-440D-A8BC-3096E1F005E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC0A4C0E-CE8D-440D-A8BC-3096E1F005E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC0A4C0E-CE8D-440D-A8BC-3096E1F005E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC0A4C0E-CE8D-440D-A8BC-3096E1F005E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2AFC328C-08BB-43A1-B063-4B4F08312B17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2AFC328C-08BB-43A1-B063-4B4F08312B17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2AFC328C-08BB-43A1-B063-4B4F08312B17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2AFC328C-08BB-43A1-B063-4B4F08312B17}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C7E0FC6-3A96-46CC-9D1B-777293B6A43C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C7E0FC6-3A96-46CC-9D1B-777293B6A43C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C7E0FC6-3A96-46CC-9D1B-777293B6A43C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C7E0FC6-3A96-46CC-9D1B-777293B6A43C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C00F177E-5E5D-4F74-8393-0A7E5D7F2A0E}
+	EndGlobalSection
+EndGlobal
