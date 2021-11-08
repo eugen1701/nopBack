@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using NopApp.DAL.Repositories;
 using NopApp.Data;
+using NopApp.Models.DbModels;
 using NopApp.Service;
 using System;
 using System.Collections.Generic;
@@ -38,6 +39,11 @@ namespace NopApp.Core
             });
 
             services.AddDbContext<NopAppContext>(options => options.UseSqlServer(Configuration.GetConnectionString("NopAppContext")));
+            services.AddIdentity<User, Role>(options => 
+                { 
+                    options.User.RequireUniqueEmail = true; 
+                })
+                .AddEntityFrameworkStores<NopAppContext>();
 
             services.AddScoped<UserRepository>();
             services.AddScoped<KitchenRepository>();
