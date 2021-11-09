@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NopApp.Models.CustomDataAnnotations;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace NopApp.Models.ApiModels
 
         [Required]
         [MinLength(8, ErrorMessage = "Password must be at least 8 characters long")]
-        [RegularExpression("(.*[^a-zA-Z0-9].*)", ErrorMessage = "Must contain a non-alphanumeric character")]
+        [Password]
         public string Password { get; set; }
 
         [Required]
