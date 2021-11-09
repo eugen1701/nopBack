@@ -8,7 +8,12 @@ namespace NopApp.Models.DbModels
 {
     public class Kitchen
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
+        public string Email { get; set; }
+        public string Address { get; set; }
+        public string OpeningHours { get; set; }
+        public string ContactInfo { get; set; }
+        public string DeliveryInterval { get; set; }
     }
 }
