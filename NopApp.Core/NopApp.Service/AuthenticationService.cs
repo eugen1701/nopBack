@@ -21,8 +21,8 @@ namespace NopApp.Service
 
         public async Task<Response> RegisterUser(RegistrationModel registrationModel)
         {
-            if (await _userRepository.GetUserByUserName(registrationModel.UserName) != null) throw new InvalidRegistrationException("Username already in use");
-            if (await _userRepository.GetUserByEmail(registrationModel.Email) != null) throw new InvalidRegistrationException("Email already in use");
+            if (await _userRepository.GetUserByUserName(registrationModel.UserName) != null) throw new RegistrationException("Username already in use");
+            if (await _userRepository.GetUserByEmail(registrationModel.Email) != null) throw new RegistrationException("Email already in use");
 
             var newUser = new User{
                 UserName = registrationModel.UserName,

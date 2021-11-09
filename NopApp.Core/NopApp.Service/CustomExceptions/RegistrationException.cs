@@ -6,18 +6,18 @@ using System.Threading.Tasks;
 
 namespace NopApp.Service.CustomExceptions
 {
-    public class InvalidRegistrationException : Exception
+    public class RegistrationException : Exception
     {
-        public InvalidRegistrationException()
+        public RegistrationException()
         {
         }
 
-        public InvalidRegistrationException(string message)
+        public RegistrationException(string message)
             : base(message)
         {
         }
 
-        public InvalidRegistrationException(string message, Exception inner)
+        public RegistrationException(string message, Exception inner)
             : base(message, inner)
         {
         }

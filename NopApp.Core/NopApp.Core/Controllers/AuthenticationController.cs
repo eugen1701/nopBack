@@ -33,7 +33,7 @@ namespace NopApp.WebApi.Controllers
                 var response = await _authenticationService.RegisterUser(registrationModel);
                 return Ok(response);
             }
-            catch (InvalidRegistrationException ex){
+            catch (RegistrationException ex){
                 return BadRequest(new Response { Status = StatusEnum.Error.ToString(), Message = ex.Message});
             }
         }
