@@ -55,6 +55,4 @@ namespace NopApp.DAL.Repositories
             await _dbContext.SaveChangesAsync();
         }
     }
-
-}
 }
