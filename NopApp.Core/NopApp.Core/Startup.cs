@@ -25,6 +25,7 @@ namespace NopApp.Core
 {
     public class Startup
     {
+        readonly string NopAppAllowSpecificOrigins = "_nopAppAllowSpecificOrigins";
 
         public Startup(IConfiguration configuration)
         {
@@ -45,6 +46,15 @@ namespace NopApp.Core
 
             var appSettingsSection = Configuration.GetSection("JwtOptions");
             services.Configure<JwtOptions>(appSettingsSection);
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: NopAppAllowSpecificOrigins,
+                                  builder =>
+                                  {
+                                      builder.WithOrigins("http://localhost:8100/").AllowAnyHeader();
+                                  });
+            });
 
             // configure jwt authentication
             var appSettings = appSettingsSection.Get<JwtOptions>();
@@ -78,10 +88,6 @@ namespace NopApp.Core
             services.AddScoped<KitchenRepository>();
             services.AddScoped<AuthenticationService>();
             services.AddScoped<KitchenService>();
-            
-            //var serviceProvider = services.BuildServiceProvider();
-            //var service = serviceProvider.GetService<KitchenService>();
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -95,6 +101,8 @@ namespace NopApp.Core
             }
 
             app.UseHttpsRedirection();
+
+            app.UseCors(NopAppAllowSpecificOrigins);
 
             app.UseRouting();
 
