@@ -30,6 +30,22 @@ namespace NopApp.DAL.Repositories
             return await this._userManager.FindByEmailAsync(email);
         }
 
+        public async Task<string> GetUserRoleByUserName(string userName)
+        {
+            var user = await this._userManager.FindByNameAsync(userName);
+
+            return (await this._userManager.GetRolesAsync(user)).FirstOrDefault();
+        }
+
+        public async Task<User> AuthenticateUserByEmail(string email, string password)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+
+            if (await _userManager.CheckPasswordAsync(user, password)) return user;
+
+            return null;
+        }
+
         public async Task<User> AddUser(User user, string password, RoleEnum role)
         {
             var addUserResult = await _userManager.CreateAsync(user, password);
