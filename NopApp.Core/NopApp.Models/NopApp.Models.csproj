@@ -10,8 +10,4 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.11" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="ApiModels\" />
-  </ItemGroup>
-
 </Project>
