@@ -108,27 +108,6 @@ namespace NopApp.DAL.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("NopApp.Models.DbModels.Ingredient", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("MealId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("quantity")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MealId");
-
-                    b.ToTable("Ingredients");
-                });
-
             modelBuilder.Entity("NopApp.Models.DbModels.Kitchen", b =>
                 {
                     b.Property<string>("Id")
@@ -155,28 +134,6 @@ namespace NopApp.DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Kitchens");
-                });
-
-            modelBuilder.Entity("NopApp.Models.DbModels.Meal", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Kcal")
-                        .HasColumnType("int");
-
-                    b.Property<string>("KitchenId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Meals");
                 });
 
             modelBuilder.Entity("NopApp.Models.DbModels.Role", b =>
@@ -209,7 +166,6 @@ namespace NopApp.DAL.Migrations
             modelBuilder.Entity("NopApp.Models.DbModels.User", b =>
                 {
                     b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("AccessFailedCount")
@@ -329,13 +285,6 @@ namespace NopApp.DAL.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("NopApp.Models.DbModels.Ingredient", b =>
-                {
-                    b.HasOne("NopApp.Models.DbModels.Meal", null)
-                        .WithMany("Ingredients")
-                        .HasForeignKey("MealId");
-                });
-
             modelBuilder.Entity("NopApp.Models.DbModels.UserRole", b =>
                 {
                     b.HasOne("NopApp.Models.DbModels.Role", null)
@@ -349,11 +298,6 @@ namespace NopApp.DAL.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("NopApp.Models.DbModels.Meal", b =>
-                {
-                    b.Navigation("Ingredients");
                 });
 #pragma warning restore 612, 618
         }

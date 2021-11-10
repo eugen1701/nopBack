@@ -19,32 +19,5 @@ namespace NopApp.DAL.Repositories
             this._dbContext = dbContext;
             this._userManager = userManager;
         }
-
-        public async Task<User> GetUserByUserName(string userName)
-        {
-            return await this._userManager.FindByNameAsync(userName);
-        }
-
-        public async Task<User> GetUserByEmail(string email)
-        {
-            return await this._userManager.FindByEmailAsync(email);
-        }
-
-        public async Task<User> AddUser(User user, string password, RoleEnum role)
-        {
-            var addUserResult = await _userManager.CreateAsync(user, password);
-
-            if (!addUserResult.Succeeded) return null;
-
-            var addToRoleResult = await _userManager.AddToRoleAsync(user, role.ToString());
-
-            if (!addToRoleResult.Succeeded)
-            {
-                await _userManager.DeleteAsync(user);
-                return null;
-            }
-
-            return user;
-        }
     }
 }
