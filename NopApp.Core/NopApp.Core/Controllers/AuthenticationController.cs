@@ -30,7 +30,8 @@ namespace NopApp.Models.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(RegistrationModel registrationModel)
+        [Route("/api/Authentication/Register/User")]
+        public async Task<IActionResult> RegisterUser(RegistrationModel registrationModel)
         {
             try
             {
