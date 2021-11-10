@@ -12,6 +12,10 @@ namespace NopApp.Data
 {
     public class NopAppContext : IdentityDbContext<User, Role, string, IdentityUserClaim<string>, UserRole, IdentityUserLogin<string>, IdentityRoleClaim<string>, IdentityUserToken<string>>
     {
+        public NopAppContext()
+        {
+
+        }
         public NopAppContext(DbContextOptions<NopAppContext> options) : base(options)
         {
 

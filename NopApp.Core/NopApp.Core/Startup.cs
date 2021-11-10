@@ -21,6 +21,7 @@ namespace NopApp.Core
 {
     public class Startup
     {
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -49,6 +50,10 @@ namespace NopApp.Core
             services.AddScoped<KitchenRepository>();
             services.AddScoped<AuthenticationService>();
             services.AddScoped<KitchenService>();
+            
+            //var serviceProvider = services.BuildServiceProvider();
+            //var service = serviceProvider.GetService<KitchenService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
