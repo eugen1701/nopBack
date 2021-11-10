@@ -27,6 +27,8 @@ namespace NopApp.Data
         }
 
         public DbSet<Kitchen> Kitchens { get; set; }
+        public DbSet<Meal> Meals { get; set; }
+        public DbSet<Ingredient> Ingredients { get; set; }
 
     }
 }
