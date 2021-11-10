@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NopApp.Data;
 
 namespace NopApp.DAL.Migrations
 {
     [DbContext(typeof(NopAppContext))]
-    partial class NopAppContextModelSnapshot : ModelSnapshot
+    [Migration("20211109005501_KitchenModification")]
+    partial class KitchenModification
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -119,16 +121,16 @@ namespace NopApp.DAL.Migrations
                     b.Property<string>("ContactInfo")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("DeliveryCloseHour")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DeliveryOpenHour")
+                    b.Property<string>("DeliveryInterval")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OpeningHours")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
