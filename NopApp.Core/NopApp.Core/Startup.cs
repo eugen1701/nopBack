@@ -52,7 +52,7 @@ namespace NopApp.Core
                 options.AddPolicy(name: NopAppAllowSpecificOrigins,
                                   builder =>
                                   {
-                                      builder.WithOrigins("http://localhost:8100/").AllowAnyHeader();
+                                      builder.WithOrigins("http://localhost:8100", "http://localhost:3000").AllowAnyHeader();
                                   });
             });
 
