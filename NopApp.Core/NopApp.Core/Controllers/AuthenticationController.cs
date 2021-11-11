@@ -36,7 +36,7 @@ namespace NopApp.Models.Controllers
             try
             {
                 var response = await _authenticationService.RegisterUser(registrationModel);
-                return Ok(response);
+                return response.Status == StatusEnum.Ok.ToString() ? Ok(response) : BadRequest(response);
             }
             catch (RegistrationException ex){
                 return BadRequest(new Response { Status = StatusEnum.Error.ToString(), Message = ex.Message});
