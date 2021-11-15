@@ -30,6 +30,11 @@ namespace NopApp.DAL.Repositories
             return await this._userManager.FindByEmailAsync(email);
         }
 
+        public async Task<User> GetUserById(string id)
+        {
+            return await this._userManager.FindByIdAsync(id);
+        }
+
         public async Task<string> GetUserRoleByUserName(string userName)
         {
             var user = await this._userManager.FindByNameAsync(userName);

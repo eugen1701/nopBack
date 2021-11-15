@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NopApp.Data;
 
 namespace NopApp.DAL.Migrations
 {
     [DbContext(typeof(NopAppContext))]
-    partial class NopAppContextModelSnapshot : ModelSnapshot
+    [Migration("20211115131933_AddedUserFields")]
+    partial class AddedUserFields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -149,17 +151,10 @@ namespace NopApp.DAL.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ManagerId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ManagerId")
-                        .IsUnique()
-                        .HasFilter("[ManagerId] IS NOT NULL");
 
                     b.ToTable("Kitchens");
                 });
@@ -246,9 +241,6 @@ namespace NopApp.DAL.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("KitchenId")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
@@ -361,15 +353,6 @@ namespace NopApp.DAL.Migrations
                         .HasForeignKey("MealId");
                 });
 
-            modelBuilder.Entity("NopApp.Models.DbModels.Kitchen", b =>
-                {
-                    b.HasOne("NopApp.Models.DbModels.User", "User")
-                        .WithOne("Kitchen")
-                        .HasForeignKey("NopApp.Models.DbModels.Kitchen", "ManagerId");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("NopApp.Models.DbModels.UserRole", b =>
                 {
                     b.HasOne("NopApp.Models.DbModels.Role", null)
@@ -388,11 +371,6 @@ namespace NopApp.DAL.Migrations
             modelBuilder.Entity("NopApp.Models.DbModels.Meal", b =>
                 {
                     b.Navigation("Ingredients");
-                });
-
-            modelBuilder.Entity("NopApp.Models.DbModels.User", b =>
-                {
-                    b.Navigation("Kitchen");
                 });
 #pragma warning restore 612, 618
         }
