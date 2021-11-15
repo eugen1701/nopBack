@@ -24,7 +24,10 @@ namespace NopApp.Service
 
             if (user == null) return null;
 
-            return UserModel.CreateFromUser(user);
+            UserModel userModel = UserModel.CreateFromUser(user);
+            userModel.Role = await _userRepository.GetUserRoleByUserName(user.UserName);
+
+            return userModel;
         }
     }
 }
