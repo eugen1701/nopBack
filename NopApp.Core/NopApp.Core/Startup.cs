@@ -52,7 +52,7 @@ namespace NopApp.Core
                 options.AddPolicy(name: NopAppAllowSpecificOrigins,
                                   builder =>
                                   {
-                                      builder.WithOrigins("http://localhost:8100", "http://localhost:3000").AllowAnyHeader();
+                                      builder.WithOrigins("http://localhost:8100", "http://localhost:3000").AllowAnyHeader().AllowAnyMethod();
                                   });
             });
 
@@ -88,6 +88,7 @@ namespace NopApp.Core
             services.AddScoped<KitchenRepository>();
             services.AddScoped<AuthenticationService>();
             services.AddScoped<KitchenService>();
+            services.AddScoped<UserService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -105,6 +106,8 @@ namespace NopApp.Core
             app.UseCors(NopAppAllowSpecificOrigins);
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
