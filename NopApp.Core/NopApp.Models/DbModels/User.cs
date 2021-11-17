@@ -16,6 +16,6 @@ namespace NopApp.Models.DbModels
         public string? Street { get; set; }
         public string? AddressNumber { get; set; }
         public Kitchen Kitchen { get; set; }
-        public string status { get; set; }
+        public string Status { get; set; }
     }
 }

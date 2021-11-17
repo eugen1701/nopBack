@@ -48,7 +48,7 @@ namespace NopApp.Service
                 Email = registrationModel.Email,
                 FirstName = registrationModel.FirstName,
                 LastName = registrationModel.LastName,
-                status = UserStatusEnum.Pending.ToString()
+                Status = UserStatusEnum.Pending.ToString()
             };
             KitchenAddress address = registrationModel.Address;
             if (address != null)
@@ -82,6 +82,18 @@ namespace NopApp.Service
             var role = await _userRepository.GetUserRoleByUserName(user.UserName);
 
             if (role == null) throw new Exception($"User {user.Id}, {user.UserName} has no associated role");
+
+            if (RoleEnum.Manager.ToString().Equals(role))
+            {
+                if (UserStatusEnum.Pending.ToString().Equals(user.Status))
+                {
+                    throw new RegistrationNotAcceptedException($"User {user.UserName} registration request hasn't been accepted yet.");
+                }
+                if (UserStatusEnum.Rejected.ToString().Equals(user.Status))
+                {
+                    throw new RegistrationNotAcceptedException($"User {user.UserName} registration request has been rejected.");
+                }
+            }
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(jwtSecret);

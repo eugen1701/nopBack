@@ -61,12 +61,17 @@ namespace NopApp.Models.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginModel loginModel)
         {
-            var loginResponse = await _authenticationService.Authenticate(loginModel.Email, loginModel.Password, _jwtOptions.Secret);
+            try { 
+                var loginResponse = await _authenticationService.Authenticate(loginModel.Email, loginModel.Password, _jwtOptions.Secret);
 
-            if (loginResponse == null)
-                return BadRequest(new Response { Status = StatusEnum.Error.ToString(), Message = "Username or password is incorrect" });
+                if (loginResponse == null)
+                    return BadRequest(new Response { Status = StatusEnum.Error.ToString(), Message = "Username or password is incorrect" });
 
-            return Ok(loginResponse);
+                return Ok(loginResponse);
+            } catch (RegistrationNotAcceptedException e)
+            {
+                return BadRequest(new Response { Status = StatusEnum.Error.ToString(), Message = e.Message });
+            }
         }
     }
 }
