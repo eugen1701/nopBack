@@ -58,6 +58,7 @@ namespace NopApp.Service
                 newUser.Street = address.Street;
                 newUser.AddressNumber = address.Number;
             }
+
             var kitchen = new Kitchen
             {
                 Name = registrationModel.KitchenName,
