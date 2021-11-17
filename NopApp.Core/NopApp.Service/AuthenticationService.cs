@@ -68,7 +68,7 @@ namespace NopApp.Service
             };
             newUser.Kitchen = kitchen;
 
-            if (await _userRepository.AddUser(newUser, registrationModel.Password, RoleEnum.User) == null) return new Response { Status = StatusEnum.Error.ToString(), Message = "Registration failed" };
+            if (await _userRepository.AddUser(newUser, registrationModel.Password, RoleEnum.Manager) == null) return new Response { Status = StatusEnum.Error.ToString(), Message = "Registration failed" };
 
             return new Response { Status = StatusEnum.Ok.ToString(), Message = "Registration successful" };
         }
