@@ -15,8 +15,7 @@ namespace NopApp.Models.DbModels
         public string? City { get; set; }
         public string? Street { get; set; }
         public string? AddressNumber { get; set; }
-        public string? ContactPhoneNumber { get; set; }
-        public string? KitchenId { get; set; }
         public Kitchen Kitchen { get; set; }
+        public string Status { get; set; }
     }
 }
