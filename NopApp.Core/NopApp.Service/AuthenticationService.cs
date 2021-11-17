@@ -37,6 +37,42 @@ namespace NopApp.Service
             return new Response { Status = StatusEnum.Ok.ToString(), Message = "Registration successful" };
         }
 
+        public async Task<Response> RegisterManager(ManagerRegistrationModel registrationModel)
+        {
+            if (await _userRepository.GetUserByUserName(registrationModel.UserName) != null) throw new RegistrationException("Username already in use");
+            if (await _userRepository.GetUserByEmail(registrationModel.Email) != null) throw new RegistrationException("Email already in use");
+
+            var newUser = new User
+            {
+                UserName = registrationModel.UserName,
+                Email = registrationModel.Email,
+                FirstName = registrationModel.FirstName,
+                LastName = registrationModel.LastName,
+                status = UserStatusEnum.Pending.ToString()
+            };
+            KitchenAddress address = registrationModel.Address;
+            if (address != null)
+            {
+                newUser.Country = address.Country;
+                newUser.City = address.City;
+                newUser.Street = address.Street;
+                newUser.AddressNumber = address.Number;
+            }
+            var kitchen = new Kitchen
+            {
+                Name = registrationModel.KitchenName,
+                Email = registrationModel.ContactEmailAddress,
+                ContactPhoneNumber = registrationModel.PhoneNumber,
+                AdditionalInformation = registrationModel.AdditionalInformation,
+                User = newUser
+            };
+            newUser.Kitchen = kitchen;
+
+            if (await _userRepository.AddUser(newUser, registrationModel.Password, RoleEnum.User) == null) return new Response { Status = StatusEnum.Error.ToString(), Message = "Registration failed" };
+
+            return new Response { Status = StatusEnum.Ok.ToString(), Message = "Registration successful" };
+        }
+
         public async Task<LoginResponse> Authenticate(string email, string password, string jwtSecret)
         {
             var user = await _userRepository.AuthenticateUserByEmail(email, password);

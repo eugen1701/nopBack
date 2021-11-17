@@ -14,15 +14,15 @@ namespace NopApp.Models.DbModels
 
         public string Name { get; set; }
 
-        public string Email { get; set; }
+        public string? Email { get; set; }
 
-        public string Address { get; set; }
+        public string? ContactPhoneNumber { get; set; }
 
-        public string ContactInfo { get; set; }
+        public string? AdditionalInformation { get; set; }
 
-        public string DeliveryOpenHour { get; set; }
+        public string? DeliveryOpenHour { get; set; }
 
-        public string DeliveryCloseHour { get; set; }
+        public string? DeliveryCloseHour { get; set; }
 
         [ForeignKey("User")]
         public string ManagerId { get; set; }
