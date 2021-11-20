@@ -67,5 +67,21 @@ namespace NopApp.DAL.Repositories
 
             return user;
         }
+
+        public async Task<User> EditUser(User user)
+        {
+            if (user == null) return null;
+
+            var editUserResult = await _userManager.UpdateAsync(user);
+
+            if (!editUserResult.Succeeded) return null;
+
+            return user;
+        }
+
+        private void ApplyUserChanges(User targetUser, User originUser)
+        {
+            
+        }
     }
 }
