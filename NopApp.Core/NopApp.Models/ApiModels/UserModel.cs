@@ -19,6 +19,7 @@ namespace NopApp.Models.ApiModels
         public string AddressNumber { get; set; }
         public string PhoneNumber { get; set; }
         public string Role { get; set; }
+        public string Status { get; set; }
     
         public static UserModel CreateFromUser(User user)
         {
@@ -35,7 +36,8 @@ namespace NopApp.Models.ApiModels
                 Street = user.Street ?? "",
                 AddressNumber = user.AddressNumber ?? "",
                 PhoneNumber = user.PhoneNumber ?? "",
-                Role = ""
+                Role = "",
+                Status = user.Status ?? ""
             };
         }
     }

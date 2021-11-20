@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using NopApp.Data;
 using NopApp.Models.DbModels;
 using System;
@@ -66,6 +67,11 @@ namespace NopApp.DAL.Repositories
             }
 
             return user;
+        }
+
+        public async Task<List<User>> GetUsers()
+        {
+            return await _dbContext.Users.ToListAsync();
         }
     }
 }

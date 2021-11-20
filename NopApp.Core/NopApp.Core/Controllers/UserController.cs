@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using NopApp.Models.ApiModels;
 using NopApp.Service;
 using NopApp.WebApi.Options;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace NopApp.WebApi.Controllers
@@ -38,6 +39,18 @@ namespace NopApp.WebApi.Controllers
                 return Forbid();
 
             return Ok(userModel);
+        }
+
+        [HttpGet("{id}")]
+        //[Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> PendingRegistrations(string id)
+        {
+            var currentUserId = User.Identity.Name;
+            //if (currentUserId != id && !User.IsInRole("Admin"))
+                //return StatusCode(403);
+
+            List<ManagerRegistrationModel> pendingManagers = await _userService.GetPendingRegistrations();
+            return Ok(pendingManagers);
         }
     }
 }

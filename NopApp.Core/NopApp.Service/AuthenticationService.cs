@@ -16,10 +16,11 @@ namespace NopApp.Service
     public class AuthenticationService
     {
         private UserRepository _userRepository;
-
-        public AuthenticationService(UserRepository userRepository)
+        private KitchenRepository _kitchenRepository;
+        public AuthenticationService(UserRepository userRepository, KitchenRepository kitchenRepository)
         {
             this._userRepository = userRepository;
+            this._kitchenRepository = kitchenRepository;
         }
 
         public async Task<Response> RegisterUser(RegistrationModel registrationModel)
@@ -65,12 +66,13 @@ namespace NopApp.Service
                 Email = registrationModel.ContactEmailAddress,
                 ContactPhoneNumber = registrationModel.PhoneNumber,
                 AdditionalInformation = registrationModel.AdditionalInformation,
-                User = newUser
+                User = newUser,
+                ManagerId = newUser.Id
             };
             newUser.Kitchen = kitchen;
-
+            
             if (await _userRepository.AddUser(newUser, registrationModel.Password, RoleEnum.Manager) == null) return new Response { Status = StatusEnum.Error.ToString(), Message = "Registration failed" };
-
+            await _kitchenRepository.AddKitchen(kitchen);
             return new Response { Status = StatusEnum.Ok.ToString(), Message = "Registration successful" };
         }
 
