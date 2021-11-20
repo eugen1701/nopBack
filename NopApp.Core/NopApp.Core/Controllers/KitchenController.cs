@@ -32,11 +32,10 @@ namespace NopApp.WebApi.Controllers
         [HttpPut]
         public async Task<IActionResult> Edit(KitchenModel editKitchenModel)
         {
-            var currentUserId = User.Identity.Name; // User.Identity.Name is actually the id of the user
+            /*var currentUserId = User.Identity.Name; // User.Identity.Name is actually the id of the user
 
             if (currentUserId != editKitchenModel.ManagerId)
-                return Forbid();
-
+                return Forbid();*/
             try
             {
                 var response = await _kitchenService.EditKitchen(editKitchenModel);
