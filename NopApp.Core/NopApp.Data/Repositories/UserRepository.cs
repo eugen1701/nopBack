@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using NopApp.Data;
 using NopApp.Models.DbModels;
 using System;
@@ -68,6 +69,11 @@ namespace NopApp.DAL.Repositories
             return user;
         }
 
+
+        public async Task<List<User>> GetUsers()
+        {
+            return await _dbContext.Users.ToListAsync();
+        }
         public async Task<User> EditUser(User user)
         {
             if (user == null) return null;
@@ -82,6 +88,7 @@ namespace NopApp.DAL.Repositories
         private void ApplyUserChanges(User targetUser, User originUser)
         {
             
+
         }
     }
 }

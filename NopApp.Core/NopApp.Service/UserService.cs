@@ -13,10 +13,11 @@ namespace NopApp.Service
     public class UserService
     {
         private UserRepository _userRepository;
-
-        public UserService(UserRepository userRepository)
+        private KitchenRepository _kitchenRepository;
+        public UserService(UserRepository userRepository, KitchenRepository kitchenRepository)
         {
             this._userRepository = userRepository;
+            this._kitchenRepository = kitchenRepository;
         }
 
         public async Task<UserModel> GetModelById(string id)
@@ -30,6 +31,25 @@ namespace NopApp.Service
 
             return userModel;
         }
+
+
+        public async Task<List<ManagerRegistrationModel>> GetPendingRegistrations()
+        {
+            List<User> allUsers = await _userRepository.GetUsers();
+            List<ManagerRegistrationModel> pendingUsers = new List<ManagerRegistrationModel>();
+            foreach(User user in allUsers)
+            {
+                string role = await _userRepository.GetUserRoleByUserName(user.UserName);
+                if (user.Status == "Pending" && role == "Manager")
+                {
+                    Kitchen kitchen = await _kitchenRepository.GetKitchenByManagerId(user.Id);
+                    user.Kitchen = kitchen;
+                    ManagerRegistrationModel pendingUserRegistration = ManagerRegistrationModel.CreateFromUser(user);
+                    pendingUsers.Add(pendingUserRegistration);
+                }
+            }
+
+            return pendingUsers;}
 
         public async Task<Response> EditUser(EditUserModel editUserModel)
         {
@@ -58,6 +78,7 @@ namespace NopApp.Service
             if (editUserResult == null) throw new EditUserException("User edit failed");
 
             return new Response { Status = StatusEnum.Ok.ToString(), Message = "User edited successfully" };
+
         }
     }
 }

@@ -18,13 +18,18 @@ namespace NopApp.DAL.Repositories
             this._dbContext = dbContext;
         }
 
-        public async Task<Kitchen> GetKitchenById(int id)
+        public async Task<Kitchen> GetKitchenById(string id)
         {
             return await _dbContext.Kitchens.FindAsync(id);
-
         }
 
-        public async Task DeleteKitchen(int id)
+        public async Task<Kitchen> GetKitchenByManagerId(string id)
+        {
+            List<Kitchen> kitchenForManager = await _dbContext.Kitchens.Where(k => k.ManagerId == id).ToListAsync();
+            return kitchenForManager[0];
+        }
+
+        public async Task DeleteKitchen(string id)
         {
             Kitchen kitchen = await this._dbContext.Kitchens.FindAsync(id);
             this._dbContext.Remove(kitchen);
@@ -42,7 +47,7 @@ namespace NopApp.DAL.Repositories
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task Update(Kitchen updateKitchen)
+        public async Task<Kitchen> Update(Kitchen updateKitchen)
         {
             var kitchenId = updateKitchen.Id;
             var oldKitchen = _dbContext.Kitchens.SingleOrDefaultAsync(kitchen => kitchen.Id == kitchenId);
@@ -51,6 +56,7 @@ namespace NopApp.DAL.Repositories
                 _dbContext.Entry(oldKitchen).CurrentValues.SetValues(updateKitchen);
             }
             await _dbContext.SaveChangesAsync();
+            return updateKitchen;
         }
     }
 }

@@ -6,6 +6,7 @@ using NopApp.Models.ApiModels;
 using NopApp.Service;
 using NopApp.Service.CustomExceptions;
 using NopApp.WebApi.Options;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace NopApp.WebApi.Controllers
@@ -41,6 +42,18 @@ namespace NopApp.WebApi.Controllers
             return Ok(userModel);
         }
 
+        [HttpGet("{id}")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> PendingRegistrations(string id)
+        {
+            var currentUserId = User.Identity.Name;
+            if (currentUserId != id && !User.IsInRole("Admin"))
+                return StatusCode(403);
+
+            List<ManagerRegistrationModel> pendingManagers = await _userService.GetPendingRegistrations();
+            return Ok(pendingManagers);
+        }
+
         [HttpPut]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> Edit(EditUserModel editUserModel)
@@ -63,6 +76,8 @@ namespace NopApp.WebApi.Controllers
             {
                 return StatusCode(403);
             }
+
         }
     }
+
 }
