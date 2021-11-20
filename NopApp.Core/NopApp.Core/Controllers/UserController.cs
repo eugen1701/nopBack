@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using NopApp.Models.ApiModels;
 using NopApp.Service;
+using NopApp.Service.CustomExceptions;
 using NopApp.WebApi.Options;
 using System.Threading.Tasks;
 
@@ -28,7 +29,7 @@ namespace NopApp.WebApi.Controllers
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> Details(string id)
         {
-            var currentUserId = User.Identity.Name;
+            var currentUserId = User.Identity.Name; // User.Identity.Name is actually the id of the user
 
             if (currentUserId != id && !User.IsInRole("Admin")) return Forbid();
 
@@ -38,6 +39,26 @@ namespace NopApp.WebApi.Controllers
                 return Forbid();
 
             return Ok(userModel);
+        }
+
+        [HttpPut]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> Edit(EditUserModel editUserModel)
+        {
+            var currentUserId = User.Identity.Name; // User.Identity.Name is actually the id of the user
+
+            if (currentUserId != editUserModel.Id) return Forbid();
+
+            try
+            {
+                var response = await _userService.EditUser(editUserModel);
+
+                return Ok(response);
+            }
+            catch(EditUserException ex)
+            {
+                return BadRequest(new Response { Status = StatusEnum.Error.ToString(), Message = ex.Message });
+            }
         }
     }
 }
