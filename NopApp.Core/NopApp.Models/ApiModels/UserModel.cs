@@ -9,6 +9,7 @@ namespace NopApp.Models.ApiModels
 {
     public class UserModel
     {
+        public string Id { get; set; }
         public string UserName { get; set; }
         public string Email { get; set; }
         public string FirstName { get; set; }
@@ -27,6 +28,7 @@ namespace NopApp.Models.ApiModels
 
             return new UserModel
             {
+                Id = user.Id,
                 UserName = user.UserName,
                 Email = user.Email,
                 FirstName = user.FirstName ?? "",
