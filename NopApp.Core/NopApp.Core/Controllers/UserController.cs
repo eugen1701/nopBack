@@ -31,12 +31,12 @@ namespace NopApp.WebApi.Controllers
         {
             var currentUserId = User.Identity.Name; // User.Identity.Name is actually the id of the user
 
-            if (currentUserId != id && !User.IsInRole("Admin")) return Forbid();
+            if (currentUserId != id && !User.IsInRole("Admin")) return StatusCode(403);
 
             UserModel userModel = await _userService.GetModelById(id);
 
             if (userModel == null)
-                return Forbid();
+                return StatusCode(403);
 
             return Ok(userModel);
         }
@@ -47,7 +47,7 @@ namespace NopApp.WebApi.Controllers
         {
             var currentUserId = User.Identity.Name; // User.Identity.Name is actually the id of the user
 
-            if (currentUserId != editUserModel.Id) return Forbid();
+            if (currentUserId != editUserModel.Id) return StatusCode(403);
 
             try
             {
@@ -58,6 +58,10 @@ namespace NopApp.WebApi.Controllers
             catch(EditUserException ex)
             {
                 return BadRequest(new Response { Status = StatusEnum.Error.ToString(), Message = ex.Message });
+            }
+            catch(UserNotFoundException ex)
+            {
+                return StatusCode(403);
             }
         }
     }

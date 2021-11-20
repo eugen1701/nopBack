@@ -36,7 +36,7 @@ namespace NopApp.Service
             if (editUserModel == null) return null;
 
             var existingUser = await _userRepository.GetUserById(editUserModel.Id);
-            if (existingUser == null) throw new EditUserException("User not found");
+            if (existingUser == null) throw new UserNotFoundException("User not found");
 
             var byUserNameResult = await _userRepository.GetUserByUserName(editUserModel.UserName);
             if (byUserNameResult != null && byUserNameResult.Id != existingUser.Id) throw new EditUserException("Username already in use");
