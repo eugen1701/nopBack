@@ -28,9 +28,15 @@ namespace NopApp.Data
             builder.Entity<User>()
                 .Property(u => u.Id)
                 .ValueGeneratedOnAdd();
+
+            builder.Entity<Kitchen>()
+                .Property(k => k.Id)
+                .ValueGeneratedOnAdd();
         }
 
         public DbSet<Kitchen> Kitchens { get; set; }
+        public DbSet<Meal> Meals { get; set; }
+        public DbSet<Ingredient> Ingredients { get; set; }
 
     }
 }

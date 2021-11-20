@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NopApp.Data;
 
 namespace NopApp.DAL.Migrations
 {
     [DbContext(typeof(NopAppContext))]
-    partial class NopAppContextModelSnapshot : ModelSnapshot
+    [Migration("20211115132338_AddedManagerKitchenRelationship")]
+    partial class AddedManagerKitchenRelationship
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -132,13 +134,12 @@ namespace NopApp.DAL.Migrations
             modelBuilder.Entity("NopApp.Models.DbModels.Kitchen", b =>
                 {
                     b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("AdditionalInformation")
+                    b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ContactPhoneNumber")
+                    b.Property<string>("ContactInfo")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DeliveryCloseHour")
@@ -233,6 +234,9 @@ namespace NopApp.DAL.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ContactPhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Country")
                         .HasColumnType("nvarchar(max)");
 
@@ -244,6 +248,9 @@ namespace NopApp.DAL.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("KitchenId")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
@@ -273,9 +280,6 @@ namespace NopApp.DAL.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Street")
