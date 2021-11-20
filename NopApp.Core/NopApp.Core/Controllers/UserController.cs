@@ -41,6 +41,7 @@ namespace NopApp.WebApi.Controllers
             return Ok(userModel);
         }
 
+<<<<<<< HEAD
         [HttpGet("{id}")]
         //[Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> PendingRegistrations(string id)
@@ -53,4 +54,11 @@ namespace NopApp.WebApi.Controllers
             return Ok(pendingManagers);
         }
     }
+=======
+
+       
+    
+
+}
+>>>>>>> 35cbc4d4791e7d63bf5db77d891a2812fb2e897f
 }

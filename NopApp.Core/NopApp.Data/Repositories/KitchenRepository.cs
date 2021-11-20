@@ -47,7 +47,7 @@ namespace NopApp.DAL.Repositories
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task Update(Kitchen updateKitchen)
+        public async Task<Kitchen> Update(Kitchen updateKitchen)
         {
             var kitchenId = updateKitchen.Id;
             var oldKitchen = _dbContext.Kitchens.SingleOrDefaultAsync(kitchen => kitchen.Id == kitchenId);
@@ -56,6 +56,7 @@ namespace NopApp.DAL.Repositories
                 _dbContext.Entry(oldKitchen).CurrentValues.SetValues(updateKitchen);
             }
             await _dbContext.SaveChangesAsync();
+            return updateKitchen;
         }
     }
 }
