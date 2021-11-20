@@ -39,5 +39,10 @@ namespace NopApp.WebApi.Controllers
 
             return Ok(userModel);
         }
-    }
+
+
+       
+    
+
+}
 }
