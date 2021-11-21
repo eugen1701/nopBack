@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using NopApp.Models.DbModels;
+
 namespace NopApp.Models.ApiModels
 {
     public class KitchenModel
@@ -25,5 +27,21 @@ namespace NopApp.Models.ApiModels
 
         public string DeliveryCloseHour { get; set; }
 
+        public static KitchenModel CreateFromKitchen(Kitchen kitchen)
+        {
+            if (kitchen == null) return null;
+
+            return new KitchenModel
+            {
+                Id = kitchen.Id,
+                ManagerId = kitchen.ManagerId,
+                Email = kitchen.Email,
+                Name = kitchen.Name,
+                ContactPhoneNumber = kitchen.ContactPhoneNumber,
+                AdditionalInformation = kitchen.AdditionalInformation,
+                DeliveryOpenHour = kitchen.DeliveryOpenHour,
+                DeliveryCloseHour = kitchen.DeliveryCloseHour
+            };
+        }
     }
 }
