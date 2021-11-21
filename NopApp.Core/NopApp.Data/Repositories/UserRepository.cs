@@ -84,11 +84,5 @@ namespace NopApp.DAL.Repositories
 
             return user;
         }
-
-        private void ApplyUserChanges(User targetUser, User originUser)
-        {
-            
-
-        }
     }
 }

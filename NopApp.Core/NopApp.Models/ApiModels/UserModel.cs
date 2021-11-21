@@ -21,8 +21,9 @@ namespace NopApp.Models.ApiModels
         public string PhoneNumber { get; set; }
         public string Role { get; set; }
         public string Status { get; set; }
+        public string KitchenId { get; set; }
     
-        public static UserModel CreateFromUser(User user)
+        public static UserModel CreateFromUser(User user, string kitchenId = null)
         {
             if (user == null) return null;
 
@@ -39,7 +40,8 @@ namespace NopApp.Models.ApiModels
                 AddressNumber = user.AddressNumber ?? "",
                 PhoneNumber = user.PhoneNumber ?? "",
                 Role = "",
-                Status = user.Status ?? ""
+                Status = user.Status ?? "",
+                KitchenId = kitchenId
             };
         }
     }

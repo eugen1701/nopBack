@@ -29,6 +29,8 @@ namespace NopApp.Service
             UserModel userModel = UserModel.CreateFromUser(user);
             userModel.Role = await _userRepository.GetUserRoleByUserName(user.UserName);
 
+            if (userModel.Role == RoleEnum.Manager.ToString()) userModel.KitchenId = (await _kitchenRepository.GetKitchenByManagerId(user.Id)).Id;
+
             return userModel;
         }
 
@@ -49,7 +51,8 @@ namespace NopApp.Service
                 }
             }
 
-            return pendingUsers;}
+            return pendingUsers;
+        }
 
         public async Task<Response> EditUser(EditUserModel editUserModel)
         {
@@ -78,7 +81,6 @@ namespace NopApp.Service
             if (editUserResult == null) throw new EditUserException("User edit failed");
 
             return new Response { Status = StatusEnum.Ok.ToString(), Message = "User edited successfully" };
-
         }
     }
 }

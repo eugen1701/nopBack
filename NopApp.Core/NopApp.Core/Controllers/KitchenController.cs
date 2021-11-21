@@ -9,6 +9,7 @@ using NopApp.Models.ApiModels;
 using NopApp.Service;
 using NopApp.Service.CustomExceptions;
 using NopApp.WebApi.Options;
+using Microsoft.AspNetCore.Authorization;
 
 namespace NopApp.WebApi.Controllers
 {
@@ -16,7 +17,6 @@ namespace NopApp.WebApi.Controllers
     [ApiController]
     public class KitchenController : Controller
     {
-
         private KitchenService _kitchenService;
         private AuthenticationService _authenticationService;
         private JwtOptions _jwtOptions;
@@ -27,15 +27,18 @@ namespace NopApp.WebApi.Controllers
             this._kitchenService = userService;
         }
 
-
-
         [HttpPut]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager")]
         public async Task<IActionResult> Edit(KitchenModel editKitchenModel)
         {
-            /*var currentUserId = User.Identity.Name; // User.Identity.Name is actually the id of the user
+            var currentUserId = User.Identity.Name; // User.Identity.Name is actually the id of the user
 
             if (currentUserId != editKitchenModel.ManagerId)
-                return Forbid();*/
+                return StatusCode(403);
+
+            if (!await _kitchenService.KitchenOwnership(editKitchenModel.Id, currentUserId))
+                return StatusCode(403);
+
             try
             {
                 var response = await _kitchenService.EditKitchen(editKitchenModel);
@@ -46,6 +49,17 @@ namespace NopApp.WebApi.Controllers
             {
                 return BadRequest(new Response { Status = StatusEnum.Error.ToString(), Message = ex.Message });
             }
+        }
+
+        [HttpGet("{id}")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> Details(string id)
+        {
+            var kitchenModel = await _kitchenService.GetModelById(id);
+
+            if (kitchenModel == null) return StatusCode(404);
+
+            return Ok(kitchenModel);
         }
     }
 }
