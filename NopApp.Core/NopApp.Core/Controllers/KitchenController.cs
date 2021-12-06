@@ -61,5 +61,13 @@ namespace NopApp.WebApi.Controllers
 
             return Ok(kitchenModel);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Get(int? quantity, int? page)
+        {
+            var kitchens = await _kitchenService.GetKitchens(quantity, page);
+
+            return Ok(kitchens);
+        }
     }
 }
