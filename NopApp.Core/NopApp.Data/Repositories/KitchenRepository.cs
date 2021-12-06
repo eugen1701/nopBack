@@ -56,5 +56,14 @@ namespace NopApp.DAL.Repositories
 
             return updateKitchen;
         }
+
+        public async Task<List<Kitchen>> Get(int? quantity, int? page)
+        {
+            IQueryable<Kitchen> query = _dbContext.Kitchens;
+            if (page != null && quantity != null) query = query.Skip((int) quantity * ((int) page - 1));
+            if (quantity != null) query = query.Take((int) quantity);
+
+            return await query.ToListAsync();
+        }
     }
 }

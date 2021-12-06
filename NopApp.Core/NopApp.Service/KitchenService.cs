@@ -79,6 +79,13 @@ namespace NopApp.Service
 
             return kitchenModel;
         }
+
+        public async Task<List<PublicKitchenModel>> GetKitchens(int? quantity, int? page)
+        {
+            var kitchens = (await _kitchenRepository.Get(quantity, page)).Select(kitchen => PublicKitchenModel.CreateFromKitchen(kitchen)).ToList();
+
+            return kitchens;
+        }
     }
 }
 
