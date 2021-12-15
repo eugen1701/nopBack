@@ -39,7 +39,10 @@ namespace NopApp.Core
         {
 
             services.AddControllers();
-            services.AddSwaggerGen();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "NopApp.Core", Version = "v1" });
+            });
 
             var appSettingsSection = Configuration.GetSection("JwtOptions");
             services.Configure<JwtOptions>(appSettingsSection);
