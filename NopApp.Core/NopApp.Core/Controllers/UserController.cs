@@ -32,12 +32,12 @@ namespace NopApp.WebApi.Controllers
         {
             var currentUserId = User.Identity.Name;
 
-            if (currentUserId != id && !User.IsInRole("Admin")) return Forbid();
+            if (currentUserId != id && !User.IsInRole("Admin")) return StatusCode(403);
 
             UserModel userModel = await _userService.GetModelById(id);
 
             if (userModel == null)
-                return Forbid();
+                return StatusCode(403);
 
             return Ok(userModel);
         }
