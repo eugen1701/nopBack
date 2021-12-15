@@ -62,6 +62,30 @@ namespace NopApp.WebApi.Controllers
             }
         }
 
+        [HttpDelete]
+        [Route("{id}")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            var currentUserId = User.Identity.Name;
+
+            try
+            {
+                var response = await _offerService.DeleteOffer(currentUserId, id);
+
+                return response.Status == StatusEnum.Ok.ToString() ? Ok(response) : BadRequest(response);
+            }
+            catch (NotAuthorizedException ex)
+            {
+                return StatusCode(403);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new Response { Status = StatusEnum.Error.ToString(), Message = ex.Message });
+            }
+        }
+
+
         [HttpGet]
         [Route("{id}")]
         [Authorize(AuthenticationSchemes = "Bearer")]

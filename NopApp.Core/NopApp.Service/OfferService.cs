@@ -69,6 +69,23 @@ namespace NopApp.Service
             return new Response { Status = StatusEnum.Ok.ToString(), Message = "Offer edited successfully" };
         }
 
+        public async Task<Response> DeleteOffer(string managerId, string offerId)
+        {
+            var offer = await _offerRepository.GetById(offerId);
+
+            if (offer == null) throw new OfferException("Delete offer: offer not found");
+
+            var manager = await _userRepository.GetManagerWithKitchen(managerId);
+
+            if (manager == null) throw new UserNotFoundException("Manager not found");
+
+            if (manager.Kitchen.Id != offer.KitchenId) throw new NotAuthorizedException("Manager not authorized to delete this offer");
+
+            var deletedOffer = await _offerRepository.Delete(offer);
+
+            return new Response { Status = StatusEnum.Ok.ToString(), Message = "Offer deleted successfully" };
+        }
+
         public async Task<List<OfferModel>> GetOffers(string kitchenId)
         {
             return (await _offerRepository.GetByKitchenId(kitchenId)).Select(offer => OfferModel.CreateFromOffer(offer)).ToList();

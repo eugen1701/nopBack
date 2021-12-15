@@ -34,16 +34,14 @@ namespace NopApp.DAL.Repositories
             return offer;
         }
 
-        public async Task<Offer> Delete(string id)
+        public async Task<Offer> Delete(Offer offer)
         {
-            var entity = await _dbContext.Offers.FirstOrDefaultAsync(offer => offer.Id == id);
+            if (offer == null) return null;
 
-            if (entity == null) return null;
-
-            _dbContext.Remove(entity);
+            _dbContext.Remove(offer);
             var saveResult = await _dbContext.SaveChangesAsync();
 
-            return entity;
+            return offer;
         }
     }
 }
