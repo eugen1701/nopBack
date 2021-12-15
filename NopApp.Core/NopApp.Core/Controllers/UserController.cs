@@ -42,15 +42,26 @@ namespace NopApp.WebApi.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> PendingRegistrations(string id)
         {
-            var currentUserId = User.Identity.Name;
+            /*var currentUserId = User.Identity.Name;
             if (currentUserId != id && !User.IsInRole("Admin"))
-                return StatusCode(403);
+                return StatusCode(403);*/
 
             List<ManagerRegistrationModel> pendingManagers = await _userService.GetPendingRegistrations();
             return Ok(pendingManagers);
+        }
+
+        [HttpGet("{requestId}/{acceptance}")]
+        public async Task<IActionResult> AcceptRejectRegistration(string requestId, string acceptance)
+        {
+            var currentUserId = User.Identity.Name;
+            
+            object user = await _userService.AcceptRejectManager(requestId, acceptance);
+            if (user == null)
+                return StatusCode(403);
+                
+            return Ok("succes");
         }
     }
 

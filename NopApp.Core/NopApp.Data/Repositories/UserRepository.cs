@@ -73,5 +73,13 @@ namespace NopApp.DAL.Repositories
         {
             return await _dbContext.Users.ToListAsync();
         }
+
+        public async Task<User> UpdateUserStatus(User user, UserStatusEnum status)
+        {
+            User updatedUser = await _dbContext.Users.Where(u => u.Email == user.Email).FirstAsync();
+            updatedUser.Status = status.ToString();
+            await _dbContext.SaveChangesAsync();
+            return updatedUser;
+        }
     }
 }
