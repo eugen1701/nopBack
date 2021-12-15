@@ -90,5 +90,12 @@ namespace NopApp.Service
         {
             return (await _offerRepository.GetByKitchenId(kitchenId)).Select(offer => OfferModel.CreateFromOffer(offer)).ToList();
         }
+
+        public async Task<OfferModel> GetOffer(string offerId)
+        {
+            var offer = await _offerRepository.GetById(offerId);
+
+            return OfferModel.CreateFromOffer(offer);
+        }
     }
 }

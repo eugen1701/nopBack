@@ -87,13 +87,23 @@ namespace NopApp.WebApi.Controllers
 
 
         [HttpGet]
-        [Route("{id}")]
+        [Route("Kitchen/{id}")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> GetOffers(string id)
         {
             var offers = await _offerService.GetOffers(id);
 
             return Ok(offers);
+        }
+
+        [HttpGet]
+        [Route("{id}")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> GetOffer(string id)
+        {
+            var offer = await _offerService.GetOffer(id);
+
+            return offer != null ? Ok(offer) : StatusCode(404);
         }
     }
 }
