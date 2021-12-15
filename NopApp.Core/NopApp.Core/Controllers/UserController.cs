@@ -30,7 +30,7 @@ namespace NopApp.WebApi.Controllers
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> Details(string id)
         {
-            var currentUserId = User.Identity.Name; // User.Identity.Name is actually the id of the user
+            var currentUserId = User.Identity.Name;
 
             if (currentUserId != id && !User.IsInRole("Admin")) return StatusCode(403);
 
@@ -68,15 +68,28 @@ namespace NopApp.WebApi.Controllers
 
                 return Ok(response);
             }
-            catch(EditUserException ex)
+            catch (EditUserException ex)
             {
                 return BadRequest(new Response { Status = StatusEnum.Error.ToString(), Message = ex.Message });
             }
-            catch(UserNotFoundException ex)
+            catch (UserNotFoundException ex)
             {
                 return StatusCode(403);
             }
 
+        }
+
+        [HttpGet("{requestId}/{acceptance}")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> AcceptRejectRegistration(string requestId, string acceptance)
+        {
+            var currentUserId = User.Identity.Name;
+            
+            object user = await _userService.AcceptRejectManager(requestId, acceptance);
+            if (user == null)
+                return StatusCode(403);
+                
+            return Ok("succes!");
         }
     }
 

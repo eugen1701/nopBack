@@ -82,5 +82,22 @@ namespace NopApp.Service
 
             return new Response { Status = StatusEnum.Ok.ToString(), Message = "User edited successfully" };
         }
+
+        public async Task<User> AcceptRejectManager(string requestId, string acceptance)
+        {
+            User user = await _userRepository.GetUserById(requestId);
+            string role = await _userRepository.GetUserRoleByUserName(user.UserName);
+            if (user.Status == "Pending" && role == "Manager" && acceptance == "true")
+            {
+                User updatedUser = await _userRepository.UpdateUserStatus(user, UserStatusEnum.Accepted);
+                return updatedUser;
+            }
+            else if (user.Status == "Pending" && role == "Manager" && acceptance == "false")
+            {
+                User updatedUser = await _userRepository.UpdateUserStatus(user, UserStatusEnum.Rejected);
+                return updatedUser;
+            }
+            return null;
+        }
     }
 }
