@@ -38,5 +38,15 @@ namespace NopApp.WebApi.Controllers
             }
             
         }
+
+        [HttpGet]
+        [Route("{id}")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> GetOffers(string id)
+        {
+            var offers = await _offerService.GetOffers(id);
+
+            return Ok(offers);
+        }
     }
 }

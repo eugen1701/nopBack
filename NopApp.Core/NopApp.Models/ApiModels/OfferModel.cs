@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NopApp.Models.DbModels;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -21,5 +22,19 @@ namespace NopApp.Models.ApiModels
 
         [Required]
         public double DailyPrice { get; set; }
+
+        public static OfferModel CreateFromOffer(Offer offer)
+        {
+            if (offer == null) return null;
+
+            return new OfferModel
+            {
+                Id = offer.Id,
+                Title = offer.Title,
+                Description = offer.Description,
+                NumberOfDays = offer.NumberOfDays,
+                DailyPrice = offer.DailyPrice
+            };
+        }
     }
 }

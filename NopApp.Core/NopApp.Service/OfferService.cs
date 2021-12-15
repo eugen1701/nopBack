@@ -43,5 +43,10 @@ namespace NopApp.Service
 
             return new Response { Status = StatusEnum.Ok.ToString(), Message = "Offer added successfully"};
         }
+
+        public async Task<List<OfferModel>> GetOffers(string kitchenId)
+        {
+            return (await _offerRepository.GetByKitchenId(kitchenId)).Select(offer => OfferModel.CreateFromOffer(offer)).ToList();
+        }
     }
 }
