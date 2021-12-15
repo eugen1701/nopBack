@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using NopApp.Models.ApiModels;
 using NopApp.Service;
-using NopApp.Service.CustomExceptions;
 using NopApp.WebApi.Options;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -30,55 +29,32 @@ namespace NopApp.WebApi.Controllers
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> Details(string id)
         {
-            var currentUserId = User.Identity.Name; // User.Identity.Name is actually the id of the user
+            var currentUserId = User.Identity.Name;
 
-            if (currentUserId != id && !User.IsInRole("Admin")) return StatusCode(403);
+            if (currentUserId != id && !User.IsInRole("Admin")) return Forbid();
 
             UserModel userModel = await _userService.GetModelById(id);
 
             if (userModel == null)
-                return StatusCode(403);
+                return Forbid();
 
             return Ok(userModel);
         }
 
         [HttpGet("{id}")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> PendingRegistrations(string id)
         {
-            /*var currentUserId = User.Identity.Name;
+            var currentUserId = User.Identity.Name;
             if (currentUserId != id && !User.IsInRole("Admin"))
-                return StatusCode(403);*/
+                return StatusCode(403);
 
             List<ManagerRegistrationModel> pendingManagers = await _userService.GetPendingRegistrations();
             return Ok(pendingManagers);
         }
 
-        [HttpPut]
-        [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<IActionResult> Edit(EditUserModel editUserModel)
-        {
-            var currentUserId = User.Identity.Name; // User.Identity.Name is actually the id of the user
-
-            if (currentUserId != editUserModel.Id) return StatusCode(403);
-
-            try
-            {
-                var response = await _userService.EditUser(editUserModel);
-
-                return Ok(response);
-            }
-            catch(EditUserException ex)
-            {
-                return BadRequest(new Response { Status = StatusEnum.Error.ToString(), Message = ex.Message });
-            }
-            catch(UserNotFoundException ex)
-            {
-                return StatusCode(403);
-            }
-
-        }
-
         [HttpGet("{requestId}/{acceptance}")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> AcceptRejectRegistration(string requestId, string acceptance)
         {
             var currentUserId = User.Identity.Name;
@@ -87,7 +63,7 @@ namespace NopApp.WebApi.Controllers
             if (user == null)
                 return StatusCode(403);
                 
-            return Ok("succes");
+            return Ok("succes!");
         }
     }
 
