@@ -37,11 +37,36 @@ namespace NopApp.Service
                 Kitchen = manager.Kitchen
             };
 
-            var addedOffer = await _offerRepository.Add(offer);
+            var addedOffer = await _offerRepository.Insert(offer);
 
             if (addedOffer == null) return new Response { Status = StatusEnum.Error.ToString(), Message = "Could not add offer" };
 
             return new Response { Status = StatusEnum.Ok.ToString(), Message = "Offer added successfully"};
+        }
+
+        public async Task<Response> EditOffer(string managerId, OfferModel offerModel)
+        {
+            if (offerModel.Id == null) throw new OfferException("Edit offer: id not specified");
+
+            var offer = await _offerRepository.GetById(offerModel.Id);
+
+            if (offer == null) throw new OfferException("Edit offer: offer not found");
+
+            var manager = await _userRepository.GetManagerWithKitchen(managerId);
+
+            if (manager == null) throw new UserNotFoundException("Manager not found");
+
+            if (manager.Kitchen.Id != offer.KitchenId) throw new NotAuthorizedException("Manager not authorized to edit this offer");
+
+            offer.Id = offerModel.Id;
+            offer.Title = offerModel.Title;
+            offer.Description = offerModel.Description;
+            offer.NumberOfDays = offerModel.NumberOfDays;
+            offer.DailyPrice = offerModel.DailyPrice;
+
+            var updatedOffer = await _offerRepository.Insert(offer);
+
+            return new Response { Status = StatusEnum.Ok.ToString(), Message = "Offer edited successfully" };
         }
 
         public async Task<List<OfferModel>> GetOffers(string kitchenId)

@@ -36,7 +36,30 @@ namespace NopApp.WebApi.Controllers
             {
                 return BadRequest(new Response { Status = StatusEnum.Error.ToString(), Message = ex.Message});
             }
-            
+        }
+
+        [HttpPut]
+        [Route("{id}")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager")]
+        public async Task<IActionResult> Edit(string id, OfferModel offerModel)
+        {
+            var currentUserId = User.Identity.Name;
+
+            offerModel.Id ??= id;
+
+            try
+            {
+                var response = await _offerService.EditOffer(currentUserId, offerModel);
+
+                return response.Status == StatusEnum.Ok.ToString() ? Ok(response) : BadRequest(response);
+            }
+            catch (NotAuthorizedException ex) {
+                return StatusCode(403);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new Response { Status = StatusEnum.Error.ToString(), Message = ex.Message });
+            }
         }
 
         [HttpGet]

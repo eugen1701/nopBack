@@ -1,10 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NopApp.Data;
 using NopApp.Models.DbModels;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace NopApp.DAL.Repositories
@@ -23,14 +21,29 @@ namespace NopApp.DAL.Repositories
             return await _dbContext.Offers.Where(offer => offer.KitchenId == kitchenId).ToListAsync();
         }
 
-        public async Task<Offer> Add(Offer offer)
+        public async Task<Offer> GetById(string id)
         {
-            await _dbContext.AddAsync(offer);
+            return await _dbContext.Offers.FirstOrDefaultAsync(offer => offer.Id == id);
+        }
+
+        public async Task<Offer> Insert(Offer offer)
+        {
+            _dbContext.Update(offer);
             var saveResult = await _dbContext.SaveChangesAsync();
 
-            if (saveResult > 0) return offer;
+            return offer;
+        }
 
-            return null;
+        public async Task<Offer> Delete(string id)
+        {
+            var entity = await _dbContext.Offers.FirstOrDefaultAsync(offer => offer.Id == id);
+
+            if (entity == null) return null;
+
+            _dbContext.Remove(entity);
+            var saveResult = await _dbContext.SaveChangesAsync();
+
+            return entity;
         }
     }
 }
