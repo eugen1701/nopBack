@@ -39,10 +39,7 @@ namespace NopApp.Core
         {
 
             services.AddControllers();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "NopApp.Core", Version = "v1" });
-            });
+            services.AddSwaggerGen();
 
             var appSettingsSection = Configuration.GetSection("JwtOptions");
             services.Configure<JwtOptions>(appSettingsSection);
@@ -86,20 +83,21 @@ namespace NopApp.Core
 
             services.AddScoped<UserRepository>();
             services.AddScoped<KitchenRepository>();
+            services.AddScoped<OfferRepository>();
+
             services.AddScoped<AuthenticationService>();
             services.AddScoped<KitchenService>();
             services.AddScoped<UserService>();
+            services.AddScoped<OfferService>();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "NopApp.Core v1"));
-            }
+            app.UseDeveloperExceptionPage();
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "NopApp.Core v1"));
 
             app.UseHttpsRedirection();
 

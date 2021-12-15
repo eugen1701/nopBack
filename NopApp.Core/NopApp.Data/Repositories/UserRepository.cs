@@ -36,6 +36,11 @@ namespace NopApp.DAL.Repositories
             return await this._userManager.FindByIdAsync(id);
         }
 
+        public async Task<User> GetManagerWithKitchen(string id)
+        {
+            return await _dbContext.Users.Include(user => user.Kitchen).SingleOrDefaultAsync(user => user.Id == id);
+        }
+
         public async Task<string> GetUserRoleByUserName(string userName)
         {
             var user = await this._userManager.FindByNameAsync(userName);

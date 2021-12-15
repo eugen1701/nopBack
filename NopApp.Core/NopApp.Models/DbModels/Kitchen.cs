@@ -28,5 +28,7 @@ namespace NopApp.Models.DbModels
         public string ManagerId { get; set; }
 
         public User User { get; set; }
+
+        public List<Offer> Offers { get; set; }
     }
 }
