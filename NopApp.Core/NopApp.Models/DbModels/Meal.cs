@@ -16,7 +16,7 @@ namespace NopApp.Models.DbModels
         public string Description { get; set; }
 
         public int Kcal { get; set; }
-        public List<Ingredient> Ingredients { get; set; }
+        public List<MealIngredient> Ingredients { get; set; }
 
 
     }
