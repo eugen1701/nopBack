@@ -55,7 +55,7 @@ namespace NopApp.Service
         {
             var kitchen = await _kitchenRepository.GetKitchenByManagerId(managerId);
 
-            return kitchenId == kitchen.Id;
+              return kitchenId == kitchen.Id;
         }
 
         public async Task<KitchenModel> GetModelById(string id)
