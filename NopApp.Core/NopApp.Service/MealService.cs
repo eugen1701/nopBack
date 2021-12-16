@@ -22,7 +22,7 @@ namespace NopApp.Service
             await this._mealRepository.AddMeal(meal);
         }
 
-        public async Task<List<Meal>> getMeals()
+        public async Task<List<Meal>> GetMeals()
         {
             return await this._mealRepository.GetMeals();
         }
