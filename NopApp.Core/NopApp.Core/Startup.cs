@@ -86,11 +86,15 @@ namespace NopApp.Core
 
             services.AddScoped<UserRepository>();
             services.AddScoped<KitchenRepository>();
+            services.AddScoped<OfferRepository>();
+
             services.AddScoped<IngredientRepository>();
             services.AddScoped<MealRepository>();
             services.AddScoped<AuthenticationService>();
             services.AddScoped<KitchenService>();
             services.AddScoped<UserService>();
+            services.AddScoped<OfferService>();
+            
             services.AddScoped<IngredientService>();
             services.AddScoped<MealService>();
         }

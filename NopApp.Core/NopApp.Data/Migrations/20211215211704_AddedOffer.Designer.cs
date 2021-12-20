@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NopApp.Data;
 
 namespace NopApp.DAL.Migrations
 {
     [DbContext(typeof(NopAppContext))]
-    partial class NopAppContextModelSnapshot : ModelSnapshot
+    [Migration("20211215211704_AddedOffer")]
+    partial class AddedOffer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -113,16 +115,18 @@ namespace NopApp.DAL.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("KitchenId")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("MealId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Unit")
+                    b.Property<int>("quantity")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("MealId");
 
                     b.ToTable("Ingredients");
                 });
@@ -183,24 +187,6 @@ namespace NopApp.DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Meals");
-                });
-
-            modelBuilder.Entity("NopApp.Models.DbModels.MealIngredient", b =>
-                {
-                    b.Property<string>("MealId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("IngredientId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<double>("Quantity")
-                        .HasColumnType("float");
-
-                    b.HasKey("MealId", "IngredientId");
-
-                    b.HasIndex("IngredientId");
-
-                    b.ToTable("MealIngredient");
                 });
 
             modelBuilder.Entity("NopApp.Models.DbModels.Offer", b =>
@@ -395,6 +381,13 @@ namespace NopApp.DAL.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("NopApp.Models.DbModels.Ingredient", b =>
+                {
+                    b.HasOne("NopApp.Models.DbModels.Meal", null)
+                        .WithMany("Ingredients")
+                        .HasForeignKey("MealId");
+                });
+
             modelBuilder.Entity("NopApp.Models.DbModels.Kitchen", b =>
                 {
                     b.HasOne("NopApp.Models.DbModels.User", "User")
@@ -402,25 +395,6 @@ namespace NopApp.DAL.Migrations
                         .HasForeignKey("NopApp.Models.DbModels.Kitchen", "ManagerId");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("NopApp.Models.DbModels.MealIngredient", b =>
-                {
-                    b.HasOne("NopApp.Models.DbModels.Ingredient", "Ingredient")
-                        .WithMany("Meals")
-                        .HasForeignKey("IngredientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("NopApp.Models.DbModels.Meal", "Meal")
-                        .WithMany("Ingredients")
-                        .HasForeignKey("MealId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Ingredient");
-
-                    b.Navigation("Meal");
                 });
 
             modelBuilder.Entity("NopApp.Models.DbModels.Offer", b =>
@@ -450,11 +424,6 @@ namespace NopApp.DAL.Migrations
             modelBuilder.Entity("NopApp.Models.DbModels.Kitchen", b =>
                 {
                     b.Navigation("Offers");
-                });
-
-            modelBuilder.Entity("NopApp.Models.DbModels.Ingredient", b =>
-                {
-                    b.Navigation("Meals");
                 });
 
             modelBuilder.Entity("NopApp.Models.DbModels.Meal", b =>

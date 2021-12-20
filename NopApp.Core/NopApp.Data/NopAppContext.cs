@@ -35,11 +35,16 @@ namespace NopApp.Data
             builder.Entity<Kitchen>()
                 .Property(k => k.Id)
                 .ValueGeneratedOnAdd();
+
+            builder.Entity<Offer>()
+                .Property(o => o.Id)
+                .ValueGeneratedOnAdd();
         }
 
         public DbSet<Kitchen> Kitchens { get; set; }
         public DbSet<Meal> Meals { get; set; }
         public DbSet<Ingredient> Ingredients { get; set; }
+        public DbSet<Offer> Offers { get; set; }
 
     }
 }
