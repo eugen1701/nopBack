@@ -14,17 +14,18 @@ namespace NopApp.WebApi.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class MealController : ControllerBase
+    public class IngredientController : ControllerBase
     {
-        private MealService _mealService;
+        private IngredientService _ingredientService;
         private KitchenService _kitchenService;
         private AuthenticationService _authenticationService;
         private JwtOptions _jwtOptions;
-        public MealController(AuthenticationService authenticationService, MealService mealService, KitchenService kitchenService, IOptions<JwtOptions> jwtOptions)
+
+        public IngredientController(AuthenticationService authenticationService, IngredientService ingredientService, KitchenService kitchenService, IOptions<JwtOptions> jwtOptions)
         {
             this._authenticationService = authenticationService;
             this._jwtOptions = jwtOptions.Value;
-            this._mealService = mealService;
+            this._ingredientService = ingredientService;
             this._kitchenService = kitchenService;
         }
 
@@ -32,19 +33,19 @@ namespace NopApp.WebApi.Controllers
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> Get(int? quantity, int? page)
         {
-            var meals = await _mealService.GetMeals();
+            var ingredients = await _ingredientService.GetIngredients();
 
-            return Ok(meals);
+            return Ok(ingredients);
         }
 
         [HttpGet]
         [Route("{id}")]
         [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<IActionResult> GetMeal(string id)
+        public async Task<IActionResult> GetIngredient(string id)
         {
-            var meal = await _mealService.GetMealById(id);
+            var ingredient = await _ingredientService.GetIngredientById(id);
 
-            return Ok(meal);
+            return Ok(ingredient);
         }
 
         [HttpDelete]
@@ -56,7 +57,7 @@ namespace NopApp.WebApi.Controllers
 
             try
             {
-                var response = await _mealService.DeleteMeal(currentUserId, id);
+                var response = await _ingredientService.DeleteIngredient(currentUserId, id);
 
                 return response.Status == StatusEnum.Ok.ToString() ? Ok(response) : BadRequest(response);
             }
@@ -72,13 +73,13 @@ namespace NopApp.WebApi.Controllers
 
         [HttpPost]
         [Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager")]
-        public async Task<IActionResult> Create(MealModel mealModel)
+        public async Task<IActionResult> Create(IngredientModel ingredientModel)
         {
             var currentUserId = User.Identity.Name; // User.Identity.Name is actually the id of the user
 
             try
             {
-                var response = await _mealService.AddMeal(currentUserId, mealModel);
+                var response = await _ingredientService.AddIngredient(currentUserId, ingredientModel);
 
                 return response.Status == StatusEnum.Ok.ToString() ? Ok(response) : BadRequest(response);
             }
@@ -90,20 +91,20 @@ namespace NopApp.WebApi.Controllers
 
         [HttpPut]
         [Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager")]
-        public async Task<IActionResult> Edit(MealModel editMealModel)
+        public async Task<IActionResult> Edit(IngredientModel editIngredientModel)
         {
             var currentUserId = User.Identity.Name; // User.Identity.Name is actually the id of the user
-            var kitchenModel = await _kitchenService.GetModelById(editMealModel.KitchenId);
+            var kitchenModel = await _kitchenService.GetModelById(editIngredientModel.KitchenId);
 
             if (currentUserId != kitchenModel.ManagerId)
                 return StatusCode(403);
 
-            if (!await _kitchenService.KitchenOwnership(editMealModel.KitchenId, currentUserId))
+            if (!await _kitchenService.KitchenOwnership(editIngredientModel.KitchenId, currentUserId))
                 return StatusCode(403);
 
             try
             {
-                var response = await _mealService.EditMeal(editMealModel);
+                var response = await _ingredientService.EditIngredient(editIngredientModel);
 
                 return Ok(response);
             }

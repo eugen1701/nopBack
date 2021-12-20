@@ -36,6 +36,11 @@ namespace NopApp.DAL.Repositories
             return await this._userManager.FindByIdAsync(id);
         }
 
+        public async Task<User> GetManagerWithKitchen(string id)
+        {
+            return await _dbContext.Users.Include(user => user.Kitchen).SingleOrDefaultAsync(user => user.Id == id);
+        }
+
         public async Task<string> GetUserRoleByUserName(string userName)
         {
             var user = await this._userManager.FindByNameAsync(userName);
@@ -83,6 +88,20 @@ namespace NopApp.DAL.Repositories
             if (!editUserResult.Succeeded) return null;
 
             return user;
+        }
+
+        private void ApplyUserChanges(User targetUser, User originUser)
+        {
+            
+
+        }
+
+        public async Task<User> UpdateUserStatus(User user, UserStatusEnum status)
+        {
+            User updatedUser = await _dbContext.Users.Where(u => u.Email == user.Email).FirstAsync();
+            updatedUser.Status = status.ToString();
+            await _dbContext.SaveChangesAsync();
+            return updatedUser;
         }
     }
 }

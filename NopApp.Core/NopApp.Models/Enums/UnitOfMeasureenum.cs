@@ -8,5 +8,6 @@ public enum UnitOfMeasure
 {
     gram,
     spoon,
-    liter
+    liter,
+    nothing
 }

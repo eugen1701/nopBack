@@ -7,9 +7,6 @@ using System.Threading.Tasks;
 
 namespace NopApp.Models.DbModels
 {
-
-   
-
     public class Ingredient
     {
         public string Id { get; set; }

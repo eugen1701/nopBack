@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace NopApp.DAL.Repositories
 {
-    class IngredientRepository
+    public class IngredientRepository
     {
         private NopAppContext _dbContext;
 
@@ -18,16 +18,16 @@ namespace NopApp.DAL.Repositories
             this._dbContext = dbContext;
         }
 
-        public async Task<Ingredient> GetIngredientById(int id)
+        public async Task<Ingredient> GetIngredientById(string id)
         {
             return await _dbContext.Ingredients.FindAsync(id);
 
         }
 
-        public async Task DeleteIngredient(int id)
+        public async Task DeleteIngredient(string id)
         {
-            Ingredient meal = await this._dbContext.Ingredients.FindAsync(id);
-            this._dbContext.Remove(meal);
+            Ingredient ingredient = await this._dbContext.Ingredients.FindAsync(id);
+            this._dbContext.Remove(ingredient);
             await _dbContext.SaveChangesAsync();
         }
 
@@ -36,16 +36,17 @@ namespace NopApp.DAL.Repositories
             return await _dbContext.Ingredients.ToListAsync();
         }
 
-        public async Task AddIngredients(Ingredient meal)
+        public async Task<Ingredient> AddIngredient(Ingredient ingredient)
         {
-            await _dbContext.AddAsync(meal);
+            await _dbContext.AddAsync(ingredient);
             await _dbContext.SaveChangesAsync();
+            return ingredient;
         }
 
-        public async Task Update(Ingredient updateIngredient)
+        public async Task<Ingredient> Update(Ingredient updateIngredient)
         {
-            var mealId = updateIngredient.Id;
-            var oldIngredient = _dbContext.Ingredients.SingleOrDefaultAsync(meal => meal.Id == mealId);
+            var ingredientId = updateIngredient.Id;
+            var oldIngredient = _dbContext.Ingredients.SingleOrDefaultAsync(ingredient => ingredient.Id == ingredientId);
            
             if (oldIngredient == null)
             {
@@ -53,6 +54,12 @@ namespace NopApp.DAL.Repositories
             }
 
             await _dbContext.SaveChangesAsync();
+            return updateIngredient;
+        }
+        public async Task<List<Ingredient>> GetIngredientsByKitchenId(string id)
+        {
+            List<Ingredient> ingredients = await this._dbContext.Ingredients.Where(ingredient => ingredient.KitchenId == id).ToListAsync();
+            return ingredients;
         }
     }
 }

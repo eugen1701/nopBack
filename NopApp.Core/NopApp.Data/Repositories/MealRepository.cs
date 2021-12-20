@@ -24,7 +24,7 @@ namespace NopApp.DAL.Repositories
 
         }
 
-        public async Task DeleteMeal(int id)
+        public async Task DeleteMeal(string id)
         {
             Meal meal = await this._dbContext.Meals.FindAsync(id);
             this._dbContext.Remove(meal);
@@ -43,10 +43,11 @@ namespace NopApp.DAL.Repositories
             return  meals;
         }
 
-        public async Task AddMeal(Meal meal)
+        public async Task<Meal> AddMeal(Meal meal)
         {
             await _dbContext.AddAsync(meal);
             await _dbContext.SaveChangesAsync();
+            return meal;
         }
 
         public async Task<Meal> Update(Meal updateMeal)

@@ -25,6 +25,9 @@ namespace NopApp.Data
         {
             base.OnModelCreating(builder);
 
+            builder.Entity<MealIngredient>()
+                .HasKey(nameof(MealIngredient.MealId), nameof(MealIngredient.IngredientId));
+
             builder.Entity<User>()
                 .Property(u => u.Id)
                 .ValueGeneratedOnAdd();
