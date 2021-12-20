@@ -18,11 +18,22 @@ namespace NopApp.Models.ApiModels
 
         public UnitOfMeasure Unit { get; set; }
 
-        public List<MealIngredient> Meals { get; set; }
+        public List<MealIngredientModel>? Meals { get; set; }
 
         public static IngredientModel CreateFromIngredient(Ingredient ingredient)
         {
             if (ingredient == null) return null;
+
+            var mealModels = new List<MealIngredientModel>();
+            if (ingredient.Meals != null)
+            {
+                foreach (var mealModel in ingredient.Meals)
+                    mealModels.Add(MealIngredientModel.CreateFromMealIngredient(mealModel));
+            }
+            else
+            {
+                mealModels = null;
+            }
 
             return new IngredientModel
             {
@@ -30,8 +41,7 @@ namespace NopApp.Models.ApiModels
                 KitchenId = ingredient.KitchenId,
                 Name = ingredient.Name,
                 Unit = ingredient.Unit,
-                Meals = ingredient.Meals
-                //trebuie facut si pt ingredients 
+                Meals = mealModels
             };
         }
     }

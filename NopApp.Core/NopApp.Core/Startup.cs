@@ -86,9 +86,13 @@ namespace NopApp.Core
 
             services.AddScoped<UserRepository>();
             services.AddScoped<KitchenRepository>();
+            services.AddScoped<IngredientRepository>();
+            services.AddScoped<MealRepository>();
             services.AddScoped<AuthenticationService>();
             services.AddScoped<KitchenService>();
             services.AddScoped<UserService>();
+            services.AddScoped<IngredientService>();
+            services.AddScoped<MealService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

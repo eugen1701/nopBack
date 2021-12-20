@@ -24,17 +24,28 @@ namespace NopApp.Service
         public async Task<Response> AddIngredient(string managerId, IngredientModel ingredientModel)
         {
             User manager = await _userRepository.GetManagerWithKitchen(managerId);
-            if (manager == null) throw new UserNotFoundException("Manager not found");
+            //if (manager == null) throw new UserNotFoundException("Manager not found");
 
-            if (manager.Kitchen == null) throw new Exception("Manager does not have a kitchen");
+            //if (manager.Kitchen == null) throw new Exception("Manager does not have a kitchen");
+
+            var mealIngredients = new List<MealIngredient>();
+            foreach (var mealIngredientModel in ingredientModel.Meals)
+            {
+                MealIngredient meal = new MealIngredient
+                {
+                    MealId = mealIngredientModel.MealId,
+                    IngredientId = mealIngredientModel.IngredientId,
+                    Quantity = mealIngredientModel.Quantity
+                };
+                mealIngredients.Add(meal);
+            }
 
             var ingredient = new Ingredient
             {
                 Id = ingredientModel.Id,
                 Name = ingredientModel.Name,
                 KitchenId = ingredientModel.KitchenId,
-                Unit = ingredientModel.Unit,
-                Meals = ingredientModel.Meals
+                Unit = ingredientModel.Unit
             };
 
             var addedIngredient = await this._ingredientRepository.AddIngredient(ingredient);
@@ -86,6 +97,8 @@ namespace NopApp.Service
         public async Task<IngredientModel> GetIngredientById(string id)
         {
             var ingredient = await _ingredientRepository.GetIngredientById(id);
+
+            if (ingredient == null) throw new Exception("Get ingredient: Ingredient not found");
 
             var ingredientModel = new IngredientModel();
             ingredientModel = IngredientModel.CreateFromIngredient(ingredient);

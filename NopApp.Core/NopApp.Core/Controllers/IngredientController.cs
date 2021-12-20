@@ -14,7 +14,7 @@ namespace NopApp.WebApi.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class IngredientController : ControllerBase
+    public class IngredientController : Controller
     {
         private IngredientService _ingredientService;
         private KitchenService _kitchenService;
@@ -43,9 +43,15 @@ namespace NopApp.WebApi.Controllers
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> GetIngredient(string id)
         {
-            var ingredient = await _ingredientService.GetIngredientById(id);
-
-            return Ok(ingredient);
+            try
+            {
+                var ingredient = await _ingredientService.GetIngredientById(id);
+                return Ok(ingredient);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new Response { Status = StatusEnum.Error.ToString(), Message = ex.Message });
+            }
         }
 
         [HttpDelete]

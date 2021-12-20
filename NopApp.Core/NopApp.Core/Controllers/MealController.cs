@@ -42,9 +42,15 @@ namespace NopApp.WebApi.Controllers
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> GetMeal(string id)
         {
-            var meal = await _mealService.GetMealById(id);
-
-            return Ok(meal);
+            try
+            {
+                var meal = await _mealService.GetMealById(id);
+                return Ok(meal);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new Response { Status = StatusEnum.Error.ToString(), Message = ex.Message });
+            }
         }
 
         [HttpDelete]
