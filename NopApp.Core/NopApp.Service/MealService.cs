@@ -34,7 +34,7 @@ namespace NopApp.Service
                 KitchenId = mealModel.KitchenId,
                 Description = mealModel.Description,
                 Kcal = mealModel.Kcal,
-                Ingredients = mealModel.Ingredients
+                //Ingredients = mealModel.Ingredients
             };
 
             var addedMeal = await this._mealRepository.AddMeal(meal);

@@ -20,7 +20,7 @@ namespace NopApp.Models.ApiModels
 
         public int Kcal { get; set; }
 
-        public List<MealIngredient> Ingredients { get; set; }
+        //public List<MealIngredient> Ingredients { get; set; }
 
 
         public static MealModel CreateFromMeal(Meal meal)
@@ -34,7 +34,7 @@ namespace NopApp.Models.ApiModels
                 KitchenId = meal.KitchenId,
                 Description = meal.Description,
                 Kcal = meal.Kcal,
-                Ingredients = meal.Ingredients
+                //Ingredients = meal.Ingredients
                 //trebuie facut si pt ingredients 
             };
         }
