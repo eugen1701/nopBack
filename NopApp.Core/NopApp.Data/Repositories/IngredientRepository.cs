@@ -56,5 +56,10 @@ namespace NopApp.DAL.Repositories
             await _dbContext.SaveChangesAsync();
             return updateIngredient;
         }
+        public async Task<List<Ingredient>> GetIngredientsByKitchenId(string id)
+        {
+            List<Ingredient> ingredients = await this._dbContext.Ingredients.Where(ingredient => ingredient.KitchenId == id).ToListAsync();
+            return ingredients;
+        }
     }
 }

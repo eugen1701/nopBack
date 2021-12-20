@@ -17,13 +17,15 @@ namespace NopApp.WebApi.Controllers
     public class MealController : ControllerBase
     {
         private MealService _mealService;
+        private KitchenService _kitchenService;
         private AuthenticationService _authenticationService;
         private JwtOptions _jwtOptions;
-        public MealController(AuthenticationService authenticationService, MealService mealService, IOptions<JwtOptions> jwtOptions)
+        public MealController(AuthenticationService authenticationService, MealService mealService, KitchenService kitchenService, IOptions<JwtOptions> jwtOptions)
         {
             this._authenticationService = authenticationService;
             this._jwtOptions = jwtOptions.Value;
             this._mealService = mealService;
+            this._kitchenService = kitchenService;
         }
 
         [HttpGet]
@@ -79,6 +81,31 @@ namespace NopApp.WebApi.Controllers
                 var response = await _mealService.AddMeal(currentUserId, mealModel);
 
                 return response.Status == StatusEnum.Ok.ToString() ? Ok(response) : BadRequest(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new Response { Status = StatusEnum.Error.ToString(), Message = ex.Message });
+            }
+        }
+
+        [HttpPut]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager")]
+        public async Task<IActionResult> Edit(MealModel editMealModel)
+        {
+            var currentUserId = User.Identity.Name; // User.Identity.Name is actually the id of the user
+            var kitchenModel = await _kitchenService.GetModelById(editMealModel.KitchenId);
+
+            if (currentUserId != kitchenModel.ManagerId)
+                return StatusCode(403);
+
+            if (!await _kitchenService.KitchenOwnership(editMealModel.KitchenId, currentUserId))
+                return StatusCode(403);
+
+            try
+            {
+                var response = await _mealService.EditMeal(editMealModel);
+
+                return Ok(response);
             }
             catch (Exception ex)
             {

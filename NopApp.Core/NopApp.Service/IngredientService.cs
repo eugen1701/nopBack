@@ -71,7 +71,7 @@ namespace NopApp.Service
 
         public async Task<List<IngredientModel>> GetIngredientsByKitchenId(string id)
         {
-            /*var ingredients = await _ingredientRepository.GetIngredientsByKitchenId(id);
+            var ingredients = await _ingredientRepository.GetIngredientsByKitchenId(id);
 
             var ingredientsmodels = new List<IngredientModel>();
 
@@ -81,7 +81,7 @@ namespace NopApp.Service
                 ingredientsmodels.Add(ingredientModel);
             }
 
-            return ingredientsmodels;*/
+            return ingredientsmodels;
         }
         public async Task<IngredientModel> GetIngredientById(string id)
         {
