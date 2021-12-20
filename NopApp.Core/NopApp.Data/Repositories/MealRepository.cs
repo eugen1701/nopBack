@@ -18,13 +18,13 @@ namespace NopApp.DAL.Repositories
             this._dbContext = dbContext;
         }
 
-        public async Task<Meal> GetMealById(int id)
+        public async Task<Meal> GetMealById(string id)
         {
             return await _dbContext.Meals.FindAsync(id);
 
         }
 
-        public async Task DeleteMeal(int id)
+        public async Task DeleteMeal(string id)
         {
             Meal meal = await this._dbContext.Meals.FindAsync(id);
             this._dbContext.Remove(meal);
@@ -36,13 +36,21 @@ namespace NopApp.DAL.Repositories
             return await _dbContext.Meals.ToListAsync();
         }
 
-        public async Task AddMeal(Meal meal)
+
+        public async Task<List<Meal>> GetMealsByKitchenId(string id)
+        {
+            List<Meal> meals = await this._dbContext.Meals.Where(meal => meal.KitchenId == id).ToListAsync();
+            return  meals;
+        }
+
+        public async Task<Meal> AddMeal(Meal meal)
         {
             await _dbContext.AddAsync(meal);
             await _dbContext.SaveChangesAsync();
+            return meal;
         }
 
-        public async Task Update(Meal updateMeal)
+        public async Task<Meal> Update(Meal updateMeal)
         {
             var mealId = updateMeal.Id;
             var oldMeal = _dbContext.Meals.SingleOrDefaultAsync(meal => meal.Id == mealId);
@@ -52,7 +60,11 @@ namespace NopApp.DAL.Repositories
                 _dbContext.Entry(oldMeal).CurrentValues.SetValues(updateMeal);
             }
             
+
             await _dbContext.SaveChangesAsync();
+            return updateMeal;
         }
+
+
     }
 }

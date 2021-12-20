@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NopApp.Data;
 
 namespace NopApp.DAL.Migrations
 {
     [DbContext(typeof(NopAppContext))]
-    partial class NopAppContextModelSnapshot : ModelSnapshot
+    [Migration("20211220132217_MealIngredientUpdate")]
+    partial class MealIngredientUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -201,33 +203,6 @@ namespace NopApp.DAL.Migrations
                     b.HasIndex("IngredientId");
 
                     b.ToTable("MealIngredient");
-                });
-
-            modelBuilder.Entity("NopApp.Models.DbModels.Offer", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<double>("DailyPrice")
-                        .HasColumnType("float");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("KitchenId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("NumberOfDays")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("KitchenId");
-
-                    b.ToTable("Offers");
                 });
 
             modelBuilder.Entity("NopApp.Models.DbModels.Role", b =>
@@ -423,15 +398,6 @@ namespace NopApp.DAL.Migrations
                     b.Navigation("Meal");
                 });
 
-            modelBuilder.Entity("NopApp.Models.DbModels.Offer", b =>
-                {
-                    b.HasOne("NopApp.Models.DbModels.Kitchen", "Kitchen")
-                        .WithMany("Offers")
-                        .HasForeignKey("KitchenId");
-
-                    b.Navigation("Kitchen");
-                });
-
             modelBuilder.Entity("NopApp.Models.DbModels.UserRole", b =>
                 {
                     b.HasOne("NopApp.Models.DbModels.Role", null)
@@ -445,11 +411,6 @@ namespace NopApp.DAL.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("NopApp.Models.DbModels.Kitchen", b =>
-                {
-                    b.Navigation("Offers");
                 });
 
             modelBuilder.Entity("NopApp.Models.DbModels.Ingredient", b =>
