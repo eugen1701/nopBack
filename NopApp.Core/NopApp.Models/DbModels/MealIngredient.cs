@@ -15,6 +15,6 @@ namespace NopApp.Models.DbModels
         public string IngredientId { get; set; }
         public double Quantity { get; set; }
 
-        public List<MealIngredient> Ingredients { get; set; }
+        
     }
 }
