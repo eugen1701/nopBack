@@ -24,9 +24,9 @@ namespace NopApp.Service
         public async Task<Response> AddIngredient(string managerId, IngredientModel ingredientModel)
         {
             User manager = await _userRepository.GetManagerWithKitchen(managerId);
-            //if (manager == null) throw new UserNotFoundException("Manager not found");
+            if (manager == null) throw new UserNotFoundException("Manager not found");
 
-            //if (manager.Kitchen == null) throw new Exception("Manager does not have a kitchen");
+            if (manager.Kitchen == null) throw new Exception("Manager does not have a kitchen");
 
             var mealIngredients = new List<MealIngredient>();
             foreach (var mealIngredientModel in ingredientModel.Meals)

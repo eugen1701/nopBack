@@ -12,6 +12,7 @@ namespace NopApp.Service
 {  public class MealService
     {
         private MealRepository _mealRepository;
+       
         private UserRepository _userRepository;
 
         public MealService(UserRepository userRepository, MealRepository mealRepository)
@@ -23,9 +24,9 @@ namespace NopApp.Service
         public async Task<Response> AddMeal(string managerId, MealModel mealModel)
         {
             User manager = await _userRepository.GetManagerWithKitchen(managerId);
-            //if (manager == null) throw new UserNotFoundException("Manager not found");
+            if (manager == null) throw new UserNotFoundException("Manager not found");
 
-            //if (manager.Kitchen == null) throw new Exception("Manager does not have a kitchen");
+            if (manager.Kitchen == null) throw new Exception("Manager does not have a kitchen");
 
             //transformation from MealIngredientModel list to MealIngredient list to add it to database
             var mealIngredients = new List<MealIngredient>();
@@ -77,6 +78,20 @@ namespace NopApp.Service
             existingMeal.Description = meal.Description ?? existingMeal.Description;
             existingMeal.Kcal = meal.Kcal == 0 ? existingMeal.Kcal:  meal.Kcal;
 
+
+            var ingredients = new List<MealIngredient>();
+
+            foreach (var ingredient in meal.Ingredients)
+            {
+                MealIngredient mealIngredient = new MealIngredient();
+                mealIngredient.MealId = ingredient.MealId;
+                mealIngredient.Quantity = ingredient.Quantity;
+                mealIngredient.IngredientId = ingredient.IngredientId;
+
+                ingredients.Add(mealIngredient);
+            }
+
+            existingMeal.Ingredients = ingredients;
 
             var returned = await _mealRepository.Update(existingMeal);
             if (returned == null) throw new Exception("Meal edit failed");
