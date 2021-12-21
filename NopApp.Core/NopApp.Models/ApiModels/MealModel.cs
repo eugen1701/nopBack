@@ -23,6 +23,7 @@ namespace NopApp.Models.ApiModels
         public List<MealIngredientModel> Ingredients { get; set; }
 
 
+
         public static MealModel CreateFromMeal(Meal meal)
         {
 
@@ -32,6 +33,7 @@ namespace NopApp.Models.ApiModels
             foreach (var ingredientModel in meal.Ingredients)
                 ingredientModels.Add(MealIngredientModel.CreateFromMealIngredient(ingredientModel));
 
+
             return new MealModel
             {
                 Id = meal.Id,
@@ -39,8 +41,7 @@ namespace NopApp.Models.ApiModels
                 Description = meal.Description,
                 Kcal = meal.Kcal,
                 Ingredients = ingredientModels
-                //Ingredients = meal.Ingredients
-                //trebuie facut si pt ingredients 
+               
             };
         }
 
