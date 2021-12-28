@@ -12,13 +12,14 @@ namespace NopApp.Service
 {  public class MealService
     {
         private MealRepository _mealRepository;
-       
         private UserRepository _userRepository;
+        private OfferRepository _offerRepository;
 
-        public MealService(UserRepository userRepository, MealRepository mealRepository)
+        public MealService(UserRepository userRepository, MealRepository mealRepository, OfferRepository offerRepository)
         {
             this._userRepository = userRepository;
             this._mealRepository = mealRepository;
+            this._offerRepository = offerRepository;
         }
 
         public async Task<Response> AddMeal(string managerId, MealModel mealModel)
@@ -60,9 +61,9 @@ namespace NopApp.Service
 
         }
 
-        public async Task<List<Meal>> GetMeals()
+        public async Task<List<Meal>> GetMeals(string kitchenId)
         {
-            return await this._mealRepository.GetMeals();
+            return await this._mealRepository.GetMealsByKitchenId(kitchenId);
         }
 
         public async Task<Response> EditMeal(MealModel meal)
@@ -139,6 +140,17 @@ namespace NopApp.Service
             await _mealRepository.DeleteMeal(mealId);
 
             return new Response { Status = StatusEnum.Ok.ToString(), Message = "Meal deleted successfully" };
+        }
+
+        public async Task<List<DayMealModel>> GetDayMeals(string dayId)
+        {
+            var day = await _offerRepository.GetDayById(dayId);
+
+            if (day == null) return null;
+
+            var meals = (await _mealRepository.GetMealsByDayId(dayId)).Select(meal => DayMealModel.CreateFromMeal(meal)).ToList();
+
+            return meals;
         }
     }
 }

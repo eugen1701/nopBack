@@ -105,5 +105,28 @@ namespace NopApp.WebApi.Controllers
 
             return offer != null ? Ok(offer) : StatusCode(404);
         }
+
+        [HttpPut]
+        [Route("{offerId}/day/{dayId}")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager")]
+        public async Task<IActionResult> ConfigureDayMeals(string offerId, string dayId, DayConfigurationModel dayConfiguration)
+        {
+            var currentUserId = User.Identity.Name;
+
+            try
+            {
+                var response = await _offerService.ConfigureDayMeals(currentUserId, offerId, dayId, dayConfiguration);
+
+                return response.Status == StatusEnum.Ok.ToString() ? Ok(response) : BadRequest(response);
+            }
+            catch (NotAuthorizedException ex)
+            {
+                return StatusCode(403);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new Response { Status = StatusEnum.Error.ToString(), Message = ex.Message });
+            }
+        }
     }
 }

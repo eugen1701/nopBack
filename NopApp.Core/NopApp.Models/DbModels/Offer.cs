@@ -16,5 +16,7 @@ namespace NopApp.Models.DbModels
         public double DailyPrice { get; set; }
         public string KitchenId { get; set; }
         public Kitchen Kitchen { get; set; }
+        public List<Day> Days { get; set; }
+        public DateTime StartingDate { get; set; }
     }
 }

@@ -30,9 +30,12 @@ namespace NopApp.WebApi.Controllers
 
         [HttpGet]
         [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<IActionResult> Get(int? quantity, int? page)
+        public async Task<IActionResult> Get()
         {
-            var meals = await _mealService.GetMeals();
+            var currentUserId = User.Identity.Name;
+            var kitchenId = (await _kitchenService.GetModelByManagerId(currentUserId)).Id;
+
+            var meals = await _mealService.GetMeals(kitchenId);
 
             return Ok(meals);
         }
@@ -117,6 +120,16 @@ namespace NopApp.WebApi.Controllers
             {
                 return BadRequest(new Response { Status = StatusEnum.Error.ToString(), Message = ex.Message });
             }
+        }
+
+        [HttpGet]
+        [Route("{dayId}")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> Day(string dayId)
+        {
+            var dayMeals = await _mealService.GetDayMeals(dayId);
+
+            return dayMeals != null ? Ok(dayMeals) : StatusCode(404);
         }
     }
 }

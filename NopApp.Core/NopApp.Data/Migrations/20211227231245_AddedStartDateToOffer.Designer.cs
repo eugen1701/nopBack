@@ -3,36 +3,23 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NopApp.Data;
 
 namespace NopApp.DAL.Migrations
 {
     [DbContext(typeof(NopAppContext))]
-    partial class NopAppContextModelSnapshot : ModelSnapshot
+    [Migration("20211227231245_AddedStartDateToOffer")]
+    partial class AddedStartDateToOffer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.11")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("DayMeal", b =>
-                {
-                    b.Property<string>("DaysId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("MealsId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("DaysId", "MealsId");
-
-                    b.HasIndex("MealsId");
-
-                    b.ToTable("DayMeal");
-                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
@@ -395,21 +382,6 @@ namespace NopApp.DAL.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles");
-                });
-
-            modelBuilder.Entity("DayMeal", b =>
-                {
-                    b.HasOne("NopApp.Models.DbModels.Day", null)
-                        .WithMany()
-                        .HasForeignKey("DaysId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("NopApp.Models.DbModels.Meal", null)
-                        .WithMany()
-                        .HasForeignKey("MealsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

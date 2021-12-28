@@ -36,11 +36,15 @@ namespace NopApp.DAL.Repositories
             return await _dbContext.Meals.ToListAsync();
         }
 
-
         public async Task<List<Meal>> GetMealsByKitchenId(string id)
         {
             List<Meal> meals = await this._dbContext.Meals.Where(meal => meal.KitchenId == id).ToListAsync();
             return  meals;
+        }
+
+        public async Task<List<Meal>> GetMealsByDayId(string dayId)
+        {
+            return await _dbContext.Meals.Include(meal => meal.Days).Where(meal => meal.Days.Any(day => day.Id == dayId)).ToListAsync();
         }
 
         public async Task<Meal> AddMeal(Meal meal)

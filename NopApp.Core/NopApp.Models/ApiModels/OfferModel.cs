@@ -23,11 +23,13 @@ namespace NopApp.Models.ApiModels
         [Required]
         public double DailyPrice { get; set; }
 
+        public List<string> DayIds { get; set; }
+
         public static OfferModel CreateFromOffer(Offer offer)
         {
             if (offer == null) return null;
 
-            return new OfferModel
+            var newOfferModel = new OfferModel
             {
                 Id = offer.Id,
                 Title = offer.Title,
@@ -35,6 +37,13 @@ namespace NopApp.Models.ApiModels
                 NumberOfDays = offer.NumberOfDays,
                 DailyPrice = offer.DailyPrice
             };
+
+            if (offer.Days != null)
+            {
+                newOfferModel.DayIds = offer.Days.OrderBy(day => day.Number).Select(day => day.Id).ToList();
+            }
+
+            return newOfferModel;
         }
     }
 }
