@@ -10,14 +10,10 @@ namespace NopApp.Models.DbModels
     {
         public string Id { get; set; }
         public string Name { get; set; }
-
         public string KitchenId { get; set; }
-
         public string Description { get; set; }
-
         public int Kcal { get; set; }
         public List<MealIngredient> Ingredients { get; set; }
-
-
+        public List<Day> Days { get; set; }
     }
 }

@@ -14,11 +14,13 @@ namespace NopApp.Service
     {
         private UserRepository _userRepository;
         private OfferRepository _offerRepository;
+        private MealRepository _mealRepository;
 
-        public OfferService(UserRepository userRepository, OfferRepository offerRepository)
+        public OfferService(UserRepository userRepository, OfferRepository offerRepository, MealRepository mealRepository)
         {
             this._offerRepository = offerRepository;
             this._userRepository = userRepository;
+            this._mealRepository = mealRepository;
         }
 
         public async Task<Response> AddOffer(string managerId, OfferModel offerModel)
@@ -96,6 +98,31 @@ namespace NopApp.Service
             var offer = await _offerRepository.GetById(offerId);
 
             return OfferModel.CreateFromOffer(offer);
+        }
+
+        public async Task<Response> ConfigureDayMeals(string managerId, string offerId, string dayId, DayConfigurationModel dayConfiguration)
+        {
+            if (dayConfiguration == null) throw new OfferException("Configure day meals: day configuration missing");
+
+            var day = await _offerRepository.GetDayById(dayId);
+
+            if (day == null) throw new OfferException("Configure day meals: day not found");
+
+            var manager = await _userRepository.GetManagerWithKitchen(managerId);
+
+            if (manager == null) throw new UserNotFoundException("Manager not found");
+
+            if (manager.Kitchen.Id != day.Offer.KitchenId || day.OfferId != offerId) throw new NotAuthorizedException("Manager not authorized to edit this day");
+
+            var kitchenMeals = (await _mealRepository.GetMealsByKitchenId(manager.Kitchen.Id)).Select(meal => meal.Id);
+            foreach (string mealId in dayConfiguration.Meals)
+            {
+                if (!kitchenMeals.Contains(mealId)) throw new OfferException("Configure day meals: meal id does not belong to this kitchen");
+            }
+
+            await _offerRepository.ConfigureDay(dayId, new List<string>(dayConfiguration.Meals));
+
+            return new Response { Status = StatusEnum.Ok.ToString(), Message = "Day configured successfully" };
         }
     }
 }
