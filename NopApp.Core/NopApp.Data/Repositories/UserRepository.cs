@@ -26,6 +26,11 @@ namespace NopApp.DAL.Repositories
             return await this._userManager.FindByNameAsync(userName);
         }
 
+        public async Task<User> GetUserByConfirmationCode(string confirmationCode)
+        {
+            return await this._dbContext.Users.Where(user => user.ConfirmationCode == confirmationCode).FirstOrDefaultAsync();
+        }
+
         public async Task<User> GetUserByEmail(string email)
         {
             return await this._userManager.FindByEmailAsync(email);
