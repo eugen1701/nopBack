@@ -18,5 +18,6 @@ namespace NopApp.Models.DbModels
         public string? AddressNumber { get; set; }
         public Kitchen Kitchen { get; set; }
         public string Status { get; set; }
+        public string ConfirmationCode { get; set; }
     }
 }

@@ -17,23 +17,31 @@ namespace NopApp.Service
     {
         private UserRepository _userRepository;
         private KitchenRepository _kitchenRepository;
-        public AuthenticationService(UserRepository userRepository, KitchenRepository kitchenRepository)
+        private EmailNotificationService _emailNotificationService;
+
+        public AuthenticationService(UserRepository userRepository, KitchenRepository kitchenRepository, EmailNotificationService emailNotificationService)
         {
             this._userRepository = userRepository;
             this._kitchenRepository = kitchenRepository;
+            this._emailNotificationService = emailNotificationService;
         }
 
         public async Task<Response> RegisterUser(RegistrationModel registrationModel)
         {
             if (await _userRepository.GetUserByUserName(registrationModel.UserName) != null) throw new RegistrationException("Username already in use");
             if (await _userRepository.GetUserByEmail(registrationModel.Email) != null) throw new RegistrationException("Email already in use");
-
-            var newUser = new User{
+            string ConfirmationCode = BuildConfirmationCode();
+            var newUser = new User
+            {
                 UserName = registrationModel.UserName,
-                Email = registrationModel.Email
+                Email = registrationModel.Email,
+                EmailConfirmed = false,
+                ConfirmationCode = ConfirmationCode
             };
 
             if (await _userRepository.AddUser(newUser, registrationModel.Password, RoleEnum.User) == null) return new Response { Status = StatusEnum.Error.ToString(), Message = "Registration failed" };
+
+            _emailNotificationService.SendUserConfirmationEmail(newUser);
 
             return new Response { Status = StatusEnum.Ok.ToString(), Message = "Registration successful" };
         }
@@ -43,13 +51,16 @@ namespace NopApp.Service
             if (await _userRepository.GetUserByUserName(registrationModel.UserName) != null) throw new RegistrationException("Username already in use");
             if (await _userRepository.GetUserByEmail(registrationModel.Email) != null) throw new RegistrationException("Email already in use");
 
+            string ConfirmationCode = BuildConfirmationCode();
             var newUser = new User
             {
                 UserName = registrationModel.UserName,
                 Email = registrationModel.Email,
                 FirstName = registrationModel.FirstName,
                 LastName = registrationModel.LastName,
-                Status = UserStatusEnum.Pending.ToString()
+                Status = UserStatusEnum.Pending.ToString(),
+                EmailConfirmed = false,
+                ConfirmationCode = ConfirmationCode
             };
             KitchenAddress address = registrationModel.Address;
             if (address != null)
@@ -98,6 +109,8 @@ namespace NopApp.Service
                 }
             }
 
+            if (!user.EmailConfirmed) throw new RegistrationNotAcceptedException($"Email {user.Email} for user {user.UserName} has not been confirmed yet.");
+
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(jwtSecret);
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -121,6 +134,21 @@ namespace NopApp.Service
             };
 
             return loginResponse;
+        }
+
+        public async Task<Response> ConfirmUserEmail(string confirmationCode)
+        {
+            User user = await _userRepository.GetUserByConfirmationCode(confirmationCode);
+            if (user == null) throw new RegistrationException($"Confirmation code {confirmationCode} does not exist.");
+            if (user.EmailConfirmed) throw new RegistrationException($"Email {user.Email} has already been confirmed.");
+            user.EmailConfirmed = true;
+            if (await _userRepository.EditUser(user) == null) throw new RegistrationException($"Failed to confirm email address {user.Email} for user {user.UserName}.");
+            return new Response { Status = StatusEnum.Ok.ToString(), Message = $"Successfully confirmed email address {user.Email} for user {user.UserName}." };
+        }
+
+        private string BuildConfirmationCode()
+        {
+            return System.Guid.NewGuid().ToString();
         }
     }
 }
