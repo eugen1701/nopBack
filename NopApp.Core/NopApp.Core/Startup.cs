@@ -91,6 +91,7 @@ namespace NopApp.Core
             services.AddScoped<UserRepository>();
             services.AddScoped<KitchenRepository>();
             services.AddScoped<OfferRepository>();
+            services.AddScoped<SubscriptionRepository>();
 
             services.AddScoped<IngredientRepository>();
             services.AddScoped<MealRepository>();
@@ -99,7 +100,8 @@ namespace NopApp.Core
             services.AddScoped<KitchenService>();
             services.AddScoped<UserService>();
             services.AddScoped<OfferService>();
-            
+            services.AddScoped<SubscriptionService>();
+
             services.AddScoped<IngredientService>();
             services.AddScoped<MealService>();
         }
