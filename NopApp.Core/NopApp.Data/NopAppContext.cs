@@ -40,6 +40,10 @@ namespace NopApp.Data
                 .Property(o => o.Id)
                 .ValueGeneratedOnAdd();
 
+            builder.Entity<Subscription>()
+                .Property(s => s.Id)
+                .ValueGeneratedOnAdd();
+
             builder.Entity<Day>()
                 .Property(d => d.Id)
                 .ValueGeneratedOnAdd();
@@ -49,6 +53,7 @@ namespace NopApp.Data
         public DbSet<Meal> Meals { get; set; }
         public DbSet<Ingredient> Ingredients { get; set; }
         public DbSet<Offer> Offers { get; set; }
+        public DbSet<Subscription> Subscriptions { get; set; }
         public DbSet<Day> Days { get; set; }
 
     }
