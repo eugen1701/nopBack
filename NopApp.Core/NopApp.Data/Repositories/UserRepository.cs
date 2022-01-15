@@ -26,6 +26,11 @@ namespace NopApp.DAL.Repositories
             return await this._userManager.FindByNameAsync(userName);
         }
 
+        public async Task<User> GetUserByConfirmationCode(string confirmationCode)
+        {
+            return await this._dbContext.Users.Where(user => user.ConfirmationCode == confirmationCode).FirstOrDefaultAsync();
+        }
+
         public async Task<User> GetUserByEmail(string email)
         {
             return await this._userManager.FindByEmailAsync(email);
@@ -34,6 +39,11 @@ namespace NopApp.DAL.Repositories
         public async Task<User> GetUserById(string id)
         {
             return await this._userManager.FindByIdAsync(id);
+        }
+
+        public async Task<User> GetUserByIdWithKitchen(string id)
+        {
+            return await this._dbContext.Users.Include(user => user.Kitchen).FirstOrDefaultAsync(user => user.Id == id);
         }
 
         public async Task<User> GetManagerWithKitchen(string id)

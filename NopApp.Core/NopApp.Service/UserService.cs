@@ -14,10 +14,13 @@ namespace NopApp.Service
     {
         private UserRepository _userRepository;
         private KitchenRepository _kitchenRepository;
-        public UserService(UserRepository userRepository, KitchenRepository kitchenRepository)
+        private EmailNotificationService _emailNotificationService;
+
+        public UserService(UserRepository userRepository, KitchenRepository kitchenRepository, EmailNotificationService emailNotificationService)
         {
             this._userRepository = userRepository;
             this._kitchenRepository = kitchenRepository;
+            this._emailNotificationService = emailNotificationService;
         }
 
         public async Task<UserModel> GetModelById(string id)
@@ -90,11 +93,13 @@ namespace NopApp.Service
             if (user.Status == "Pending" && role == "Manager" && acceptance == "true")
             {
                 User updatedUser = await _userRepository.UpdateUserStatus(user, UserStatusEnum.Accepted);
+                _emailNotificationService.SendUserConfirmationEmail(updatedUser);
                 return updatedUser;
             }
             else if (user.Status == "Pending" && role == "Manager" && acceptance == "false")
             {
                 User updatedUser = await _userRepository.UpdateUserStatus(user, UserStatusEnum.Rejected);
+                _emailNotificationService.SendManagerRejectedEmail(updatedUser);
                 return updatedUser;
             }
             return null;

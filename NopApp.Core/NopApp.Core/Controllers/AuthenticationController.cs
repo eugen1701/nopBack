@@ -59,6 +59,22 @@ namespace NopApp.Models.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("/api/Authentication/Confirmation/{confirmationCode}")]
+        public async Task<IActionResult> ConfirmUserEmail(string confirmationCode)
+        {
+            try
+            {
+                var response = await _authenticationService.ConfirmUserEmail(confirmationCode);
+
+                return response.Status == StatusEnum.Ok.ToString() ? Ok(response) : BadRequest(response);
+            }
+            catch (RegistrationException ex)
+            {
+                return BadRequest(new Response { Status = StatusEnum.Error.ToString(), Message = ex.Message });
+            }
+        }
+
         [HttpPost]
         public async Task<IActionResult> Login(LoginModel loginModel)
         {

@@ -20,6 +20,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NopApp.WebApi.Options;
+using NopApp.Service.Options;
 
 namespace NopApp.Core
 {
@@ -46,6 +47,9 @@ namespace NopApp.Core
 
             var appSettingsSection = Configuration.GetSection("JwtOptions");
             services.Configure<JwtOptions>(appSettingsSection);
+
+            var emailSettings = Configuration.GetSection("EmailOptions");
+            services.Configure<EmailOptions>(emailSettings);
 
             services.AddCors(options =>
             {
@@ -87,14 +91,17 @@ namespace NopApp.Core
             services.AddScoped<UserRepository>();
             services.AddScoped<KitchenRepository>();
             services.AddScoped<OfferRepository>();
+            services.AddScoped<SubscriptionRepository>();
 
             services.AddScoped<IngredientRepository>();
             services.AddScoped<MealRepository>();
             services.AddScoped<AuthenticationService>();
+            services.AddScoped<EmailNotificationService>();
             services.AddScoped<KitchenService>();
             services.AddScoped<UserService>();
             services.AddScoped<OfferService>();
-            
+            services.AddScoped<SubscriptionService>();
+
             services.AddScoped<IngredientService>();
             services.AddScoped<MealService>();
         }

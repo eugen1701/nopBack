@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NopApp.Data;
 
 namespace NopApp.DAL.Migrations
 {
     [DbContext(typeof(NopAppContext))]
-    partial class NopAppContextModelSnapshot : ModelSnapshot
+    [Migration("20220110195405_AddConfirmationCode")]
+    partial class AddConfirmationCode
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -295,33 +297,6 @@ namespace NopApp.DAL.Migrations
                     b.ToTable("AspNetRoles");
                 });
 
-            modelBuilder.Entity("NopApp.Models.DbModels.Subscription", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("OfferId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("StarDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OfferId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Subscriptions");
-                });
-
             modelBuilder.Entity("NopApp.Models.DbModels.User", b =>
                 {
                     b.Property<string>("Id")
@@ -522,21 +497,6 @@ namespace NopApp.DAL.Migrations
                         .HasForeignKey("KitchenId");
 
                     b.Navigation("Kitchen");
-                });
-
-            modelBuilder.Entity("NopApp.Models.DbModels.Subscription", b =>
-                {
-                    b.HasOne("NopApp.Models.DbModels.Offer", "Offer")
-                        .WithMany()
-                        .HasForeignKey("OfferId");
-
-                    b.HasOne("NopApp.Models.DbModels.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Offer");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("NopApp.Models.DbModels.UserRole", b =>
