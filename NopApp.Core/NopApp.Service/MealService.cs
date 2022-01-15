@@ -61,9 +61,10 @@ namespace NopApp.Service
 
         }
 
-        public async Task<List<Meal>> GetMeals(string kitchenId)
+        public async Task<List<MealModel>> GetMeals(string kitchenId)
         {
-            return await this._mealRepository.GetMealsByKitchenId(kitchenId);
+            var meals = (await this._mealRepository.GetMealsByKitchenId(kitchenId)).Select(m => MealModel.CreateFromMeal(m)).ToList();
+            return meals;
         }
 
         public async Task<Response> EditMeal(MealModel meal)

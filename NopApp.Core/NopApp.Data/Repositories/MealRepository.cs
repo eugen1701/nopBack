@@ -38,7 +38,7 @@ namespace NopApp.DAL.Repositories
 
         public async Task<List<Meal>> GetMealsByKitchenId(string id)
         {
-            List<Meal> meals = await this._dbContext.Meals.Where(meal => meal.KitchenId == id).ToListAsync();
+            List<Meal> meals = await this._dbContext.Meals.Include(m => m.Ingredients).ThenInclude(mi => mi.Ingredient).Where(meal => meal.KitchenId == id).ToListAsync();
             return  meals;
         }
 
