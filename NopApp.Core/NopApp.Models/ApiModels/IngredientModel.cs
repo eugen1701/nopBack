@@ -10,7 +10,7 @@ namespace NopApp.Models.ApiModels
 {
     public class IngredientModel
     {
-        [Required]
+
         public string Id { get; set; }
         public string Name { get; set; }
 
@@ -18,23 +18,13 @@ namespace NopApp.Models.ApiModels
 
         public UnitOfMeasure Unit { get; set; }
 
-        public List<MealIngredientModel>? Meals { get; set; }
+        
 
         public static IngredientModel CreateFromIngredient(Ingredient ingredient)
         {
             if (ingredient == null) return null;
 
-            var mealModels = new List<MealIngredientModel>();
-            if (ingredient.Meals != null)
-            {
-                foreach (var mealModel in ingredient.Meals)
-                    mealModels.Add(MealIngredientModel.CreateFromMealIngredient(mealModel));
-            }
-            else
-            {
-                mealModels = null;
-            }
-
+           
 
 
 
@@ -44,7 +34,7 @@ namespace NopApp.Models.ApiModels
                 KitchenId = ingredient.KitchenId,
                 Name = ingredient.Name,
                 Unit = ingredient.Unit,
-                Meals = mealModels
+               
             };
         }
     }

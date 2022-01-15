@@ -45,7 +45,7 @@ namespace NopApp.Service
 
             var meal = new Meal
             {
-                Id = mealModel.Id,
+                Id = null,
                 Name = mealModel.Name,
                 KitchenId = mealModel.KitchenId,
                 Description = mealModel.Description,

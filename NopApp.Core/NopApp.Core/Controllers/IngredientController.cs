@@ -29,11 +29,17 @@ namespace NopApp.WebApi.Controllers
             this._kitchenService = kitchenService;
         }
 
+       
+
         [HttpGet]
         [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<IActionResult> Get(int? quantity, int? page)
+        public async Task<IActionResult> Get()
         {
-            var ingredients = await _ingredientService.GetIngredients();
+
+            var currentUserId = User.Identity.Name;
+
+
+            var ingredients = await _ingredientService.GetIngredientsByUserId(currentUserId);
 
             return Ok(ingredients);
         }

@@ -43,6 +43,14 @@ namespace NopApp.Data
             builder.Entity<Day>()
                 .Property(d => d.Id)
                 .ValueGeneratedOnAdd();
+
+            builder.Entity<Ingredient>()
+              .Property(i => i.Id)
+              .ValueGeneratedOnAdd();
+
+            builder.Entity<Meal>()
+              .Property(m => m.Id)
+              .ValueGeneratedOnAdd();
         }
 
         public DbSet<Kitchen> Kitchens { get; set; }

@@ -13,12 +13,14 @@ namespace NopApp.Service
     public class IngredientService
     {
         private IngredientRepository _ingredientRepository;
+        private KitchenRepository _kitchenRepository;
         private UserRepository _userRepository;
 
-        public IngredientService(UserRepository userRepository, IngredientRepository ingredientRepository)
+        public IngredientService(UserRepository userRepository, IngredientRepository ingredientRepository, KitchenRepository kitchenRepository)
         {
             this._userRepository = userRepository;
             this._ingredientRepository = ingredientRepository;
+            this._kitchenRepository = kitchenRepository;
         }
 
         public async Task<Response> AddIngredient(string managerId, IngredientModel ingredientModel)
@@ -28,21 +30,29 @@ namespace NopApp.Service
 
             if (manager.Kitchen == null) throw new Exception("Manager does not have a kitchen");
 
-            var mealIngredients = new List<MealIngredient>();
-            foreach (var mealIngredientModel in ingredientModel.Meals)
-            {
-                MealIngredient meal = new MealIngredient
-                {
-                    MealId = mealIngredientModel.MealId,
-                    IngredientId = mealIngredientModel.IngredientId,
-                    Quantity = mealIngredientModel.Quantity
-                };
-                mealIngredients.Add(meal);
-            }
+           
+
+
+
+            //if (ingredientModel.Meals != null)
+            //{
+            //    foreach (var mealIngredientModel in ingredientModel.Meals)
+            //    {
+            //        MealIngredient meal = new MealIngredient
+            //        {
+            //            MealId = mealIngredientModel.MealId,
+            //            IngredientId = mealIngredientModel.IngredientId,
+            //            Quantity = mealIngredientModel.Quantity
+            //        };
+            //        mealIngredients.Add(meal);
+            //    }
+            //}
+
+
 
             var ingredient = new Ingredient
             {
-                Id = ingredientModel.Id,
+                Id = null,
                 Name = ingredientModel.Name,
                 KitchenId = ingredientModel.KitchenId,
                 Unit = ingredientModel.Unit
@@ -79,6 +89,24 @@ namespace NopApp.Service
 
             return new Response { Status = StatusEnum.Ok.ToString(), Message = "Ingredient edited successfully" };
         }
+
+        public async Task<List<IngredientModel>> GetIngredientsByUserId(string id)
+        {
+
+            var kitchenId = (await _kitchenRepository.GetKitchenByManagerId(id)).Id;
+            var ingredients = await _ingredientRepository.GetIngredientsByKitchenId(kitchenId);
+
+            var ingredientsmodels = new List<IngredientModel>();
+
+            foreach (var ingredient in ingredients)
+            {
+                IngredientModel ingredientModel = IngredientModel.CreateFromIngredient(ingredient);
+                ingredientsmodels.Add(ingredientModel);
+            }
+
+            return ingredientsmodels;
+        }
+
 
         public async Task<List<IngredientModel>> GetIngredientsByKitchenId(string id)
         {
