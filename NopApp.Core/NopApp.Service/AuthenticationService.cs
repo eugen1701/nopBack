@@ -91,6 +91,8 @@ namespace NopApp.Service
         {
             var user = await _userRepository.AuthenticateUserByEmail(email, password);
 
+            string kitchenId = null;
+
             if (user == null) return null;
 
             var role = await _userRepository.GetUserRoleByUserName(user.UserName);
@@ -107,6 +109,8 @@ namespace NopApp.Service
                 {
                     throw new RegistrationNotAcceptedException($"User {user.UserName} registration request has been rejected.");
                 }
+
+                kitchenId = (await _kitchenRepository.GetKitchenByManagerId(user.Id)).Id;
             }
 
             if (!user.EmailConfirmed) throw new RegistrationNotAcceptedException($"Email {user.Email} for user {user.UserName} has not been confirmed yet.");
@@ -130,7 +134,8 @@ namespace NopApp.Service
                 UserId = user.Id,
                 UserName = user.UserName,
                 Role = role,
-                Token = tokenHandler.WriteToken(token)
+                Token = tokenHandler.WriteToken(token),
+                KitchenId = kitchenId
             };
 
             return loginResponse;
