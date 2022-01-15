@@ -20,7 +20,7 @@ namespace NopApp.DAL.Repositories
 
         public async Task<Meal> GetMealById(string id)
         {
-            return await _dbContext.Meals.FindAsync(id);
+            return await _dbContext.Meals.Include(m => m.Ingredients).ThenInclude(mi => mi.Ingredient).Where(m => m.Id == id).FirstOrDefaultAsync();
 
         }
 
