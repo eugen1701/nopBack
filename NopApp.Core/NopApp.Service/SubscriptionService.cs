@@ -32,7 +32,7 @@ namespace NopApp.Service
 
             if (offer == null) throw new OfferException($"Offer with id {offerModel.OfferId} not found");
 
-            var totalDays = (offerModel.EndDate - offerModel.StarDate).TotalDays;
+            var totalDays = (offerModel.EndDate - offerModel.StartDate).TotalDays;
             var dailyPrice = offer.DailyPrice;
             var totalPrice = totalDays * dailyPrice;
 
@@ -40,7 +40,7 @@ namespace NopApp.Service
             {
                 User = user,
                 Offer = offer,
-                StarDate = offerModel.StarDate,
+                StarDate = offerModel.StartDate,
                 EndDate = offerModel.EndDate,
                 Price = totalPrice
             };
