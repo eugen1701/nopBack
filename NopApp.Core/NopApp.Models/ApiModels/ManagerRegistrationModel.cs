@@ -6,6 +6,8 @@ namespace NopApp.Models.ApiModels
 {
     public class ManagerRegistrationModel
     {
+        public string UserId { get; set; }
+
         [Required]
         [MinLength(3, ErrorMessage = "Username must be at least 3 characters long")]
         [RegularExpression(@"^\S*$", ErrorMessage = "No white space allowed in username")]
@@ -45,6 +47,7 @@ namespace NopApp.Models.ApiModels
             kitchenAddress.Street = user.Street;
             return new ManagerRegistrationModel
             {
+                UserId = user.Id,
                 UserName = user.UserName,
                 LastName = user.LastName,
                 FirstName = user.FirstName,
