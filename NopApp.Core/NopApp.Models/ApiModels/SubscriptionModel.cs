@@ -14,6 +14,7 @@ namespace NopApp.Models.ApiModels
         public DateTime StartDate { get; set; }
         [Required]
         public DateTime EndDate { get; set; }
+        public double Price { get; set; }
 
         public static SubscriptionModel CreateFromSubscription(Subscription subscription)
         {
@@ -24,7 +25,8 @@ namespace NopApp.Models.ApiModels
                 Id = subscription.Id,
                 OfferId = subscription.Offer.Id,
                 StartDate = subscription.StarDate,
-                EndDate = subscription.EndDate
+                EndDate = subscription.EndDate,
+                Price = subscription.Price
             };
 
             return newSubscriptionModel;
