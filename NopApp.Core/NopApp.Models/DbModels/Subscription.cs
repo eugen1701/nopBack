@@ -14,5 +14,6 @@ namespace NopApp.Models.DbModels
         public Offer Offer { get; set; }
         public DateTime StarDate { get; set; }
         public DateTime EndDate { get; set; }
+        public double Price { get; set; }
     }
 }

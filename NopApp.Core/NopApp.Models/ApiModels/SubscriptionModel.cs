@@ -14,6 +14,7 @@ namespace NopApp.Models.ApiModels
         public DateTime StarDate { get; set; }
         [Required]
         public DateTime EndDate { get; set; }
+        public double Price { get; set; }
 
         public string KitchenName { get; set; }
         public string OfferTitle { get; set; }
@@ -31,6 +32,7 @@ namespace NopApp.Models.ApiModels
                 OfferDescription = subscription.Offer.Description,
                 StarDate = subscription.StarDate,
                 EndDate = subscription.EndDate,
+                Price = subscription.Price,
                 KitchenName = kitchenName
             };
 

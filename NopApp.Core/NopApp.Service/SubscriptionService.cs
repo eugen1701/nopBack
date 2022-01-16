@@ -32,12 +32,17 @@ namespace NopApp.Service
 
             if (offer == null) throw new OfferException($"Offer with id {offerModel.OfferId} not found");
 
+            var totalDays = (offerModel.EndDate - offerModel.StarDate).TotalDays;
+            var dailyPrice = offer.DailyPrice;
+            var totalPrice = totalDays * dailyPrice;
+
             var subscription = new Subscription
             {
                 User = user,
                 Offer = offer,
                 StarDate = offerModel.StarDate,
-                EndDate = offerModel.EndDate
+                EndDate = offerModel.EndDate,
+                Price = totalPrice
             };
 
             var addedSubscription = await _subscriptionRepository.AddSubscription(subscription);
