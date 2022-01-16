@@ -23,7 +23,7 @@ namespace NopApp.DAL.Repositories
 
         public async Task<Offer> GetById(string id)
         {
-            return await _dbContext.Offers.Include(offer => offer.Days).FirstOrDefaultAsync(offer => offer.Id == id);
+            return await _dbContext.Offers.Include(offer => offer.Days).Include(offer => offer.Kitchen).FirstOrDefaultAsync(offer => offer.Id == id);
         }
 
         public async Task<Offer> Insert(Offer offer)

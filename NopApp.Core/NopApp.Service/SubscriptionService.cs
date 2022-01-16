@@ -44,7 +44,7 @@ namespace NopApp.Service
 
             if (addedSubscription == null) throw new SubscriptionException("Could not add subscription");
 
-            return SubscriptionModel.CreateFromSubscription(addedSubscription);
+            return SubscriptionModel.CreateFromSubscription(addedSubscription, offer.Kitchen.Name);
         }
 
         public async Task<SubscriptionModel> GetSubscription(string userId, string id)
@@ -59,13 +59,13 @@ namespace NopApp.Service
             if (RoleEnum.Manager.ToString().Equals(role))
             {
                 Subscription subscription = await this._subscriptionRepository.GetByIdAndKitchenId(id, user.Kitchen.Id);
-                return SubscriptionModel.CreateFromSubscription(subscription);
+                return SubscriptionModel.CreateFromSubscription(subscription, subscription.Offer.Kitchen.Name);
             }
 
             if (RoleEnum.User.ToString().Equals(role))
             {
                 Subscription subscription = await this._subscriptionRepository.GetByIdAndUserId(id, userId);
-                return SubscriptionModel.CreateFromSubscription(subscription);
+                return SubscriptionModel.CreateFromSubscription(subscription, subscription.Offer.Kitchen.Name);
             }
 
             throw new SubscriptionException($"Role {role} not applicable for get subscription by id");
@@ -83,12 +83,12 @@ namespace NopApp.Service
             if (RoleEnum.Manager.ToString().Equals(role))
             {
                 List<Subscription> userSubscriptions = await this._subscriptionRepository.GetByKitchenId(user.Kitchen.Id, quantity, page);
-                return userSubscriptions.Select(subscription => SubscriptionModel.CreateFromSubscription(subscription)).ToList();
+                return userSubscriptions.Select(subscription => SubscriptionModel.CreateFromSubscription(subscription, subscription.Offer.Kitchen.Name)).ToList();
             }
             if (RoleEnum.User.ToString().Equals(role))
             {
                 List<Subscription> userSubscriptions = await this._subscriptionRepository.GetByUserId(userId, quantity, page);
-                return userSubscriptions.Select(subscription => SubscriptionModel.CreateFromSubscription(subscription)).ToList();
+                return userSubscriptions.Select(subscription => SubscriptionModel.CreateFromSubscription(subscription, subscription.Offer.Kitchen.Name)).ToList();
             }
             throw new SubscriptionException($"Role {role} not applicable for listing subscriptions");
         }

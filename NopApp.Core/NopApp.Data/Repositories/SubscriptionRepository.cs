@@ -30,7 +30,7 @@ namespace NopApp.DAL.Repositories
 
         public async Task<Subscription> GetByIdAndKitchenId(string id, string kitchenId)
         {
-            return await this._dbContext.Subscriptions.Include(subscription => subscription.Offer)
+            return await this._dbContext.Subscriptions.Include(subscription => subscription.Offer).ThenInclude(offer => offer.Kitchen)
                 .Where(subscription => subscription.Offer.KitchenId == kitchenId)
                 .Where(subscription => subscription.Id == id)
                 .FirstOrDefaultAsync();
@@ -46,7 +46,7 @@ namespace NopApp.DAL.Repositories
 
         public async Task<List<Subscription>> GetByUserId(string userId, int? quantity, int? page)
         {
-            IQueryable<Subscription> query = _dbContext.Subscriptions.Include(subscription => subscription.Offer)
+            IQueryable<Subscription> query = _dbContext.Subscriptions.Include(subscription => subscription.Offer).ThenInclude(offer => offer.Kitchen)
                 .Where(subscription => subscription.User.Id == userId);
             if (page != null && quantity != null) query = query.Skip((int)quantity * ((int)page - 1));
             if (quantity != null) query = query.Take((int)quantity);
@@ -56,7 +56,7 @@ namespace NopApp.DAL.Repositories
 
         public async Task<List<Subscription>> GetByKitchenId(string kitchenId, int? quantity, int? page)
         {
-            IQueryable<Subscription> query = this._dbContext.Subscriptions.Include(subscription => subscription.Offer)
+            IQueryable<Subscription> query = this._dbContext.Subscriptions.Include(subscription => subscription.Offer).ThenInclude(offer => offer.Kitchen)
                 .Where(subscription => subscription.Offer.KitchenId == kitchenId);
             if (page != null && quantity != null) query = query.Skip((int)quantity * ((int)page - 1));
             if (quantity != null) query = query.Take((int)quantity);

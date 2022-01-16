@@ -15,7 +15,11 @@ namespace NopApp.Models.ApiModels
         [Required]
         public DateTime EndDate { get; set; }
 
-        public static SubscriptionModel CreateFromSubscription(Subscription subscription)
+        public string KitchenName { get; set; }
+        public string OfferTitle { get; set; }
+        public string OfferDescription { get; set; }
+
+        public static SubscriptionModel CreateFromSubscription(Subscription subscription, string kitchenName)
         {
             if (subscription == null) return null;
 
@@ -23,8 +27,11 @@ namespace NopApp.Models.ApiModels
             {
                 Id = subscription.Id,
                 OfferId = subscription.Offer.Id,
+                OfferTitle = subscription.Offer.Title,
+                OfferDescription = subscription.Offer.Description,
                 StarDate = subscription.StarDate,
-                EndDate = subscription.EndDate
+                EndDate = subscription.EndDate,
+                KitchenName = kitchenName
             };
 
             return newSubscriptionModel;
