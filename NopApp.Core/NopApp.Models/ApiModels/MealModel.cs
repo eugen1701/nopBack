@@ -36,6 +36,7 @@ namespace NopApp.Models.ApiModels
             return new MealModel
             {
                 Id = meal.Id,
+                Name = meal.Name,
                 KitchenId = meal.KitchenId,
                 Description = meal.Description,
                 Kcal = meal.Kcal,

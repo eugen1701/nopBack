@@ -31,7 +31,7 @@ namespace NopApp.DAL.Repositories
             if (offer.Id == null)
             {
                 offer.Days = new List<Day>();
-                for (int i = 1; i < offer.NumberOfDays; i++)
+                for (int i = 1; i <= offer.NumberOfDays; i++)
                 {
                     offer.Days.Add(new Day { Number = i });
                 }
