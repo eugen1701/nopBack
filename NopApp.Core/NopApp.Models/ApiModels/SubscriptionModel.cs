@@ -11,7 +11,7 @@ namespace NopApp.Models.ApiModels
         [Required]
         public string OfferId { get; set; }
         [Required]
-        public DateTime StarDate { get; set; }
+        public DateTime StartDate { get; set; }
         [Required]
         public DateTime EndDate { get; set; }
 
@@ -23,7 +23,7 @@ namespace NopApp.Models.ApiModels
             {
                 Id = subscription.Id,
                 OfferId = subscription.Offer.Id,
-                StarDate = subscription.StarDate,
+                StartDate = subscription.StarDate,
                 EndDate = subscription.EndDate
             };
 
